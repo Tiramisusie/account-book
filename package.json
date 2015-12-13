@@ -1,0 +1,22 @@
+{
+  "name": "react-gulp",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tiramisusie/react-gulp"
+  },
+  "description": "a template for react project, include gulp, broswer-sync",
+  "dependencies": {
+    "browser-sync": "^2.10.0"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "del": "^2.1.0",
+    "gulp": "^3.9.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.6.1",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
