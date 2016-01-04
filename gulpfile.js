@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
 var browserify = require('browserify');
-var reactify = require('reactify');
+var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 var del = require('del');
 
@@ -19,7 +19,7 @@ gulp.task('watch', ['js', 'clean'], function () {
 
 gulp.task('js', function(){
     browserify('app/js/app.js')
-        .transform(reactify)
+        .transform(babelify)
         .bundle()
         .pipe(source('app.js'))
         .pipe(gulp.dest('./dist/'));

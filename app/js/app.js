@@ -1,15 +1,23 @@
-/**
- * Created by liangningcong on 15/12/13.
- */
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var App = React.createClass({
-    render: function(){
+var Hello = React.createClass({
+	getInitialState(){
+		return ({
+			name: 'susie'
+		})
+	},
+
+    render(){
         return (
-            <div>hello world</div>
+            <div>
+				hello {this.state.name}
+            </div>
         )
     }
 });
 
-ReactDOM.render(<App />, document.getElementsByClassName('app')[0]);
+ReactDOM.render(
+    <Hello />,
+    document.getElementById('app')
+);
