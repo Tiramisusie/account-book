@@ -1,23 +1,19 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Summary from './component/summary/root'
 
-var Hello = React.createClass({
-	getInitialState(){
-		return ({
-			name: 'susie'
-		})
-	},
 
+var App = React.createClass({
     render(){
         return (
             <div>
-				hello {this.state.name}
+				<Summary />
             </div>
         )
     }
 });
 
 ReactDOM.render(
-    <Hello />,
+    <App />,
     document.getElementById('app')
 );
