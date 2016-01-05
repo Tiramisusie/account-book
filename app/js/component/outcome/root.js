@@ -3,14 +3,12 @@
  */
 import React from 'react';
 
-var Summary = React.createClass({
+var Outcome = React.createClass({
    render(){
        return (
-           <div id="summary">
-
-           </div>
+           <div id="outcome" className="base-panel"></div>
        )
    }
 });
 
-export default Summary;
+export default Outcome;

@@ -1,7 +1,39 @@
-@bg-color: #D8FFF1;
+@summary-height: 20vh;
+
+@main-panel-margin-left-right: 8%;
+@main-panel-height: 78%;
+
+html {
+  font-size: 62.5%;
+}
 
 body {
-  background-color: @bg-color;
+  background-color: #D8FFF1;
   width: 100vw;
   height: 100vh;
+  min-height: 900px;
 }
+
+#summary {
+  background: #5B73A7;
+  width: 100vw;
+  height: @summary-height;
+}
+
+.base-panel {
+  width: 40%;
+  height: @main-panel-height;
+  background-color: #B485D8;
+  margin-top: (100vh - @summary-height - @main-panel-height) / 2;
+}
+
+#income {
+  float: left;
+  margin-left: @main-panel-margin-left-right;
+}
+
+#outcome {
+  float: right;
+  margin-right: @main-panel-margin-left-right;
+}
+

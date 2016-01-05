@@ -14,7 +14,7 @@ var less = require('gulp-less');
 gulp.task('watch', ['script', 'style'], function () {
     browserSync.init({
         server: './',
-        files: ['./dist/js/*', 'app/css/'],
+        files: ['dist/js/*.js', 'dist/css/*.css'],
         port: 3001
     });
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import Summary from './component/summary/root'
+import Income from './component/income/root'
+import Outcome from './component/outcome/root'
 
 
 var App = React.createClass({
@@ -8,6 +11,8 @@ var App = React.createClass({
         return (
             <div>
 				<Summary />
+                <Income />
+                <Outcome />
             </div>
         )
     }
