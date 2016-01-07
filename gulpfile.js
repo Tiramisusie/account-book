@@ -20,7 +20,7 @@ gulp.task('watch', ['script', 'style'], function () {
 
     gulp.watch('index.html', browserSync.reload);
 
-    gulp.watch('app/js/*.js', ['script']);
+    gulp.watch('app/js/**/*', ['script']);
 
     gulp.watch('app/css/*.less', ['style']);
 });

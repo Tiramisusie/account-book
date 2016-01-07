@@ -1,17 +1,20 @@
 @summary-height: 20vh;
-
-@main-panel-margin-left-right: 8%;
-@main-panel-height: 78%;
+@border-bottom-color: #ddd;
+@main-panel-left-right: 100px;
 
 html {
   font-size: 62.5%;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 body {
-  background-color: #D8FFF1;
   width: 100vw;
   height: 100vh;
-  min-height: 900px;
 }
 
 #summary {
@@ -21,19 +24,68 @@ body {
 }
 
 .base-panel {
-  width: 40%;
-  height: @main-panel-height;
-  background-color: #B485D8;
-  margin-top: (100vh - @summary-height - @main-panel-height) / 2;
+  width: 41%;
+  position: absolute;
+  top: @summary-height;
+  bottom: 0;
 }
 
 #income {
-  float: left;
-  margin-left: @main-panel-margin-left-right;
+  left: @main-panel-left-right;
 }
 
 #outcome {
-  float: right;
-  margin-right: @main-panel-margin-left-right;
+  right: @main-panel-left-right;
 }
 
+//--------panel header----------
+.total-title {
+  border-bottom: 1px solid @border-bottom-color;
+  padding: 0 10px 5px;
+}
+
+.total-money {
+  float: right;
+}
+
+.total-currency {
+  margin-right: 5px;
+}
+
+
+//--------panel list-----------
+.base-panel-list {
+  width: 100%;
+  height: 52%;
+}
+
+.record-list {
+  padding: 10px;
+}
+
+.incomeItem, .outcomeItem {
+  padding: 10px;
+  border-bottom: 1px solid @border-bottom-color;
+}
+
+.record-amount {
+  float: right;
+}
+
+.record-currency {
+  margin-right: 5px;
+}
+
+//--------panel chart----------
+.base-panel-chart {
+  height: 200px;
+  border: 1px solid;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.chartContainer {
+  position: absolute;
+  bottom: 20px;
+}
