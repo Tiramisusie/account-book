@@ -40,7 +40,6 @@ body {
 
 //--------panel header----------
 .total-title {
-  border-bottom: 1px solid @border-bottom-color;
   padding: 0 10px 5px;
 }
 
@@ -57,10 +56,14 @@ body {
 .base-panel-list {
   width: 100%;
   height: 52%;
+  border: 2px dashed #ccc;
+  position: relative;
 }
 
 .record-list {
-  padding: 10px;
+  padding: 0 10px;
+  height: 100%;
+  overflow: auto;
 }
 
 .incomeItem, .outcomeItem {
@@ -76,10 +79,30 @@ body {
   margin-right: 5px;
 }
 
+@btns-list-width: 20px;
+.btns-list {
+  position: absolute;
+  right: -@btns-list-width;
+  top: 0;
+  background-color: #bbb;
+  width: @btns-list-width;
+  height: 40px;
+  border-radius: 0 10px 10px 0;
+  text-align: center;
+  line-height: 40px;
+  a {
+    color: #fff;
+    line-height: 20px;
+    font-size: 20px;
+    &:hover, &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
 //--------panel chart----------
 .base-panel-chart {
   height: 200px;
-  border: 1px solid;
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -88,4 +111,9 @@ body {
 .chartContainer {
   position: absolute;
   bottom: 20px;
+}
+
+//---------modal---------
+.form-group {
+  margin-top: 10px;
 }

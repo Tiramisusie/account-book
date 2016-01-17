@@ -2,7 +2,8 @@
  * Created by liangningcong on 16/1/4.
  */
 import React from 'react';
-import ListItem from '../list-item/root';
+import ListItem from '../list-item/list-item-root';
+import MyChart from '../chart/chart-root';
 
 var Income = React.createClass({
     getInitialState(){
@@ -18,25 +19,6 @@ var Income = React.createClass({
             totalMoney: totalMoney
         })
     },
-    componentDidMount(){
-        var data = [
-            {
-                value: 30,
-                color:"#F38630"
-            },
-            {
-                value : 50,
-                color : "#E0E4CC"
-            },
-            {
-                value : 100,
-                color : "#69D2E7"
-            }
-        ];
-
-        var ctx = this.refs.incomeChart.getContext('2d'),
-            chart = new Chart(ctx).Pie(data);
-    },
     _renderListItem(){
         var itemArr = [],
             listData = this.props.data.income;
@@ -46,6 +28,10 @@ var Income = React.createClass({
         }
 
         return itemArr;
+    },
+    _addNewIncome(e){
+        e.preventDefault();
+        this.props.addIncome();
     },
     render(){
         return (
@@ -63,9 +49,13 @@ var Income = React.createClass({
                     <ul className="record-list">
                         {this._renderListItem()}
                     </ul>
+
+                    <div className="btns-list">
+                        <a href="#" onClick={this._addNewIncome} className="add-record" title="新增支出">+</a>
+                    </div>
                 </div>
                 <div className="base-panel-chart">
-                    <canvas ref="incomeChart" id="incomeChart" className="chartContainer"></canvas>
+                    <MyChart />
                 </div>
             </div>
         )

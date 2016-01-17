@@ -1,14 +1,16 @@
 {
-  "name": "react-gulp",
+  "name": "account book",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tiramisusie/react-gulp"
+    "url": "https://github.com/Tiramisusie/account-book"
   },
-  "description": "a template for react project, include gulp, broswer-sync",
+  "description": "a webapp, based on react, redux",
   "dependencies": {
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "react-redux": "^4.0.6",
+    "redux": "^3.0.5"
   },
   "devDependencies": {
     "autoprefixer": "^6.2.3",

@@ -38,10 +38,10 @@ gulp.task('style', function() {
 });
 
 gulp.task('script', function(){
-    browserify('app/js/app.js')
+    browserify('app/js/index.js')
         .transform(babelify)
         .bundle()
-        .pipe(source('app.js'))
+        .pipe(source('index.js'))
         .pipe(gulp.dest('./dist/js/'));
 });
 
@@ -50,7 +50,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('build', ['clean', 'script', 'style'], function() {
-    gulp.src('dist/js/app.js')
+    gulp.src('dist/js/index.js')
         .pipe(uglify())
         .pipe(rev())
         .pipe(gulp.dest('dist/js'));

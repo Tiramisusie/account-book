@@ -1,30 +1,43 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import Summary from './component/summary/root'
-import Income from './component/income/root'
-import Outcome from './component/outcome/root'
+import Summary from './components/summary/summary-root'
+import Income from './components/income/income-root'
+import Expend from './components/expend/expend-root'
+import Modal from './components/modal/new-record-modal'
 
 import data from './data/income_doc.json'
 
+import * as ActionCreators from './actions/action-creators';
+
 
 var App = React.createClass({
+    componentWillReceiveProps(nextprops){
+        log(nextprops);
+    },
     render(){
+        let { dispatch } = this.props;
+        let actionCreators = bindActionCreators(ActionCreators, dispatch);
+
         return (
             <div>
-				<Summary />
+                <Summary />
                 <div className="container">
                     <div className="row">
-                        <Income data={data}/>
-
+                        <Income data={data} {...actionCreators}/>
                     </div>
                 </div>
+                <Modal data={this.props.modalData}/>
             </div>
         )
     }
 });
 
-ReactDOM.render(
-    <App />,
-    document.getElementById('app')
-);
+function mapStateToProps(state) {
+    return {
+        modalData: state.modalData
+    }
+}
+
+export default connect(mapStateToProps)(App);
