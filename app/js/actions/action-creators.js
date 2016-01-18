@@ -23,14 +23,16 @@ export function addExpend(){
  * 把新增支出记录发送到后台
  * @returns {{type}}
  */
-export function postNewIncome(){
+export function postNewIncome(recordData){
     return {
-        type: Actions.POST_NEW_INCOME
+        type: Actions.POST_NEW_INCOME,
+        data: recordData
     }
 }
 
-export function postNewExpend(){
+export function postNewExpend(recordData){
     return {
-        type: Actions.POST_NEW_EXPEND
+        type: Actions.POST_NEW_EXPEND,
+        data: recordData
     }
 }

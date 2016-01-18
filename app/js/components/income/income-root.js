@@ -7,7 +7,7 @@ import MyChart from '../chart/chart-root';
 
 var Income = React.createClass({
     getInitialState(){
-        var listData = this.props.data.income,
+        var listData = this.props.data,
             totalMoney = 0;
 
         //计算当天的总收入
@@ -21,7 +21,7 @@ var Income = React.createClass({
     },
     _renderListItem(){
         var itemArr = [],
-            listData = this.props.data.income;
+            listData = this.props.data;
 
         for(var i=0, len=listData.length; i<len; i++) {
             itemArr.push(<ListItem key={i} className='incomeItem' data={listData[i]} />);
@@ -32,6 +32,7 @@ var Income = React.createClass({
     _addNewIncome(e){
         e.preventDefault();
         this.props.addIncome();
+        $('#recordModal').modal('show');
     },
     render(){
         return (
@@ -46,7 +47,7 @@ var Income = React.createClass({
                     </h3>
                 </div>
                 <div className="base-panel-list">
-                    <ul className="record-list">
+                    <ul className="record-list" id="income-list">
                         {this._renderListItem()}
                     </ul>
 

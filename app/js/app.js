@@ -13,8 +13,17 @@ import * as ActionCreators from './actions/action-creators';
 
 
 var App = React.createClass({
-    componentWillReceiveProps(nextprops){
-        log(nextprops);
+    getInitialState(){
+        return {
+            incomeList: data.income
+        }
+    },
+    componentWillReceiveProps(next){
+        if(next.newIncomeData) {
+            this.setState({
+                incomeList: this.state.incomeList.concat(next.newIncomeData)
+            })
+        }
     },
     render(){
         let { dispatch } = this.props;
@@ -25,10 +34,10 @@ var App = React.createClass({
                 <Summary />
                 <div className="container">
                     <div className="row">
-                        <Income data={data} {...actionCreators}/>
+                        <Income data={this.state.incomeList} {...actionCreators}/>
                     </div>
                 </div>
-                <Modal data={this.props.modalData}/>
+                <Modal data={this.props.modalData} {...actionCreators}/>
             </div>
         )
     }
@@ -36,7 +45,8 @@ var App = React.createClass({
 
 function mapStateToProps(state) {
     return {
-        modalData: state.modalData
+        modalData: state.modalData,
+        newIncomeData: state.newIncomeData
     }
 }
 

@@ -2,18 +2,25 @@
  * Created by liangningcong on 16/1/17.
  */
 import React from 'react';
+import ListItem from '../list-item/list-item-root';
 
 var Modal = React.createClass({
+    _postNewRecord(){
+        var recordData = {
+                type: this.refs.recordType.value,
+                money: this.refs.recordMoney.value
+            };
+
+        $('#recordModal').modal('hide');
+        this.props.postNewIncome(recordData);
+    },
     getDefaultProps(){
         return {
             data: {
-                name: ''
+                type: 'income',
+                name: '新增支出'
             }
         };
-    },
-    componentWillReceiveProps(){
-        log('new record');
-        $('#recordModal').modal('show');
     },
     render(){
         return(
@@ -27,22 +34,20 @@ var Modal = React.createClass({
                             <form>
                                 <div className="form-group">
                                     <label htmlFor="recordType">类型</label>
-                                    <select name="recordType" id="recordType" className="form-control">
-                                        <option value="1">1</option>
-                                    </select>
+                                    <input type="text" className="form-control" ref="recordType" id="recordType" />
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="recordMoney">金额</label>
                                     <div className="input-group">
                                         <div className="input-group-addon">￥</div>
-                                        <input type="number" className="form-control" name="recordMoney" id="recordMoney" />
+                                        <input type="number" className="form-control" ref="recordMoney" id="recordMoney" />
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" className="btn btn-primary">确定</button>
+                            <button type="button" onClick={this._postNewRecord} className="btn btn-primary">确定</button>
                         </div>
                     </div>
                 </div>
