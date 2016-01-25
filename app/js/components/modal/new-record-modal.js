@@ -11,8 +11,16 @@ var Modal = React.createClass({
                 money: this.refs.recordMoney.value
             };
 
+        this.refs.recordType.value = '';
+        this.refs.recordMoney.value = '';
+
         $('#recordModal').modal('hide');
-        this.props.postNewIncome(recordData);
+
+        if(this.props.data.type === 'income') {
+            this.props.postNewIncome(recordData);
+        } else {
+            this.props.postNewExpend(recordData);
+        }
     },
     getDefaultProps(){
         return {

@@ -7,27 +7,31 @@ import MyChart from '../chart/chart-root';
 
 var Income = React.createClass({
     getInitialState(){
-        var listData = this.props.data,
-            totalMoney = 0;
-
-        //计算当天的总收入
-        for(let i=0, len=listData.length; i<len; i++) {
-            totalMoney += listData[i].money;
-        }
-
-        return ({
-            totalMoney: totalMoney
+        return this._renderListItem(this.props);
+    },
+    componentWillReceiveProps(nextprops){
+        var tmpObj = this._renderListItem(nextprops);
+        this.setState({
+            totalMoney: tmpObj.totalMoney,
+            listData: tmpObj.listData
         })
     },
-    _renderListItem(){
+    _renderListItem(props){
         var itemArr = [],
-            listData = this.props.data;
+            totalMoney = 0,
+            listData = props.data;
 
         for(var i=0, len=listData.length; i<len; i++) {
+            //生成列表项
             itemArr.push(<ListItem key={i} className='incomeItem' data={listData[i]} />);
+            //计算总金额
+            totalMoney += listData[i].money * 1;
         }
 
-        return itemArr;
+        return {
+            listData: itemArr,
+            totalMoney: totalMoney
+        };
     },
     _addNewIncome(e){
         e.preventDefault();
@@ -48,15 +52,15 @@ var Income = React.createClass({
                 </div>
                 <div className="base-panel-list">
                     <ul className="record-list" id="income-list">
-                        {this._renderListItem()}
+                        {this.state.listData}
                     </ul>
 
                     <div className="btns-list">
-                        <a href="#" onClick={this._addNewIncome} className="add-record" title="新增支出">+</a>
+                        <a href="#" onClick={this._addNewIncome} className="add-record" title="新增收入">+</a>
                     </div>
                 </div>
                 <div className="base-panel-chart">
-                    <MyChart />
+                    <MyChart data={this.props.data} type="income"/>
                 </div>
             </div>
         )

@@ -1,5 +1,5 @@
 {
-  "name": "account book",
+  "name": "account-book",
   "version": "0.0.1",
   "repository": {
     "type": "git",
@@ -7,6 +7,7 @@
   },
   "description": "a webapp, based on react, redux",
   "dependencies": {
+    "randomcolor": "^0.4.3",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.6",

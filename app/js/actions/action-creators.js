@@ -4,7 +4,7 @@
 import * as Actions from './action-constants';
 
 /**
- * 新增支出,弹出包含表单的模态框
+ * 新增支出,设置弹出框的类型
  * @returns {{type}}
  */
 export function addIncome(){

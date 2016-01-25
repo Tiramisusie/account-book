@@ -7,7 +7,8 @@ import Income from './components/income/income-root'
 import Expend from './components/expend/expend-root'
 import Modal from './components/modal/new-record-modal'
 
-import data from './data/income_doc.json'
+import incomeData from './data/income_doc.json'
+import expendData from './data/expend_doc.json'
 
 import * as ActionCreators from './actions/action-creators';
 
@@ -15,13 +16,20 @@ import * as ActionCreators from './actions/action-creators';
 var App = React.createClass({
     getInitialState(){
         return {
-            incomeList: data.income
+            incomeList: incomeData.income,
+            expendList: expendData.expend
         }
     },
     componentWillReceiveProps(next){
+        log(next);
         if(next.newIncomeData) {
             this.setState({
                 incomeList: this.state.incomeList.concat(next.newIncomeData)
+            })
+        }
+        if(next.newExpendData) {
+            this.setState({
+                expendList: this.state.expendList.concat(next.newExpendData)
             })
         }
     },
@@ -35,6 +43,7 @@ var App = React.createClass({
                 <div className="container">
                     <div className="row">
                         <Income data={this.state.incomeList} {...actionCreators}/>
+                        <Expend data={this.state.expendList} {...actionCreators}/>
                     </div>
                 </div>
                 <Modal data={this.props.modalData} {...actionCreators}/>
@@ -46,7 +55,8 @@ var App = React.createClass({
 function mapStateToProps(state) {
     return {
         modalData: state.modalData,
-        newIncomeData: state.newIncomeData
+        newIncomeData: state.newIncomeData,
+        newExpendData: state.newExpendData
     }
 }
 
