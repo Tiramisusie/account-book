@@ -1,7 +1,7 @@
 /**
  * Created by liangningcong on 16/1/7.
  */
-import React from 'react';
+var React = require('react');
 
 var Item = React.createClass({
     render(){
@@ -17,4 +17,4 @@ var Item = React.createClass({
     }
 });
 
-export default Item;
+module.exports = Item;

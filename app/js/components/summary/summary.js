@@ -1,7 +1,7 @@
 /**
  * Created by liangningcong on 16/1/4.
  */
-import React from 'react';
+var React = require('react');
 
 var Summary = React.createClass({
    render(){
@@ -13,4 +13,4 @@ var Summary = React.createClass({
    }
 });
 
-export default Summary;
+module.exports = Summary;

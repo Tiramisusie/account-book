@@ -1,8 +1,8 @@
 /**
  * Created by liangningcong on 16/1/17.
  */
-import React from 'react';
-import ListItem from '../list-item/list-item-root';
+var React = require('react');
+var ListItem = require('../ListItem/listItem');
 
 var Modal = React.createClass({
     _postNewRecord(){
@@ -64,4 +64,4 @@ var Modal = React.createClass({
     }
 });
 
-export default Modal;
+module.exports = Modal;

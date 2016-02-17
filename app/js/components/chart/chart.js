@@ -1,8 +1,8 @@
 /**
  * Created by liangningcong on 16/1/10.
  */
-import React from 'react';
-import {randomColor} from 'randomcolor'
+var React = require('react');
+var randomColor = require('randomcolor');
 
 var MyChart = React.createClass({
     /**
@@ -38,13 +38,13 @@ var MyChart = React.createClass({
                 //销毁旧的图表
                 incomeChart.destroy();
             }
-            incomeChart = new Chart(ctx).Pie(data);
+            incomeChart = new Chart(ctx).Doughnut(data);
         } else {
             if( expendChart ) {
                 //销毁旧的图表
                 expendChart.destroy();
             }
-            expendChart = new Chart(ctx).Pie(data);
+            expendChart = new Chart(ctx).Doughnut(data);
         }
 
 
@@ -64,4 +64,4 @@ var MyChart = React.createClass({
     }
 });
 
-export default MyChart;
+module.exports = MyChart;

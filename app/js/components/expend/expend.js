@@ -1,11 +1,11 @@
 /**
  * Created by liangningcong on 16/1/4.
  */
-import React from 'react';
-import ListItem from '../list-item/list-item-root';
-import MyChart from '../chart/chart-root';
+var React = require('react');
+var ListItem = require('../ListItem/listItem');
+var MyChart = require('../chart/chart');
 
-var Income = React.createClass({
+var Expend = React.createClass({
     getInitialState(){
         return this._renderListItem(this.props);
     },
@@ -23,7 +23,7 @@ var Income = React.createClass({
 
         for(var i=0, len=listData.length; i<len; i++) {
             //生成列表项
-            itemArr.push(<ListItem key={i} className='incomeItem' data={listData[i]} />);
+            itemArr.push(<ListItem key={i} className='expendItem' data={listData[i]} />);
             //计算总金额
             totalMoney += listData[i].money * 1;
         }
@@ -33,17 +33,17 @@ var Income = React.createClass({
             totalMoney: totalMoney
         };
     },
-    _addNewIncome(e){
+    _addNewExpend(e){
         e.preventDefault();
-        this.props.addIncome();
+        this.props.addExpend();
         $('#recordModal').modal('show');
     },
     render(){
         return (
-            <div id="income" className="base-panel">
+            <div id="expend" className="base-panel">
                 <div className="base-panel-head">
                     <h3 className="total-title">
-                        总收入
+                        总支出
                         <span className="total-money">
                             <span className="total-currency">CNY</span>
                             <span className="total-num">{this.state.totalMoney}</span>
@@ -51,20 +51,20 @@ var Income = React.createClass({
                     </h3>
                 </div>
                 <div className="base-panel-list">
-                    <ul className="record-list" id="income-list">
+                    <ul className="record-list" id="expend-list">
                         {this.state.listData}
                     </ul>
 
                     <div className="btns-list">
-                        <a href="#" onClick={this._addNewIncome} className="add-record" title="新增收入">+</a>
+                        <a href="#" onClick={this._addNewExpend} className="add-record" title="新增支出">+</a>
                     </div>
                 </div>
                 <div className="base-panel-chart">
-                    <MyChart data={this.props.data} type="income"/>
+                    <MyChart data={this.props.data} type="expend"/>
                 </div>
             </div>
         )
     }
 });
 
-export default Income;
+module.exports = Expend;
