@@ -2,14 +2,16 @@ var constants = require('../constants/accountConstants');
 var AppDispatcher = require('../dispatcher/appDispatcher');
 
 var accountActions = {
-    addIncome(){
+    addExpend(data){
         AppDispatcher.dispatch({
-            actionType: constants.ADD_INCOME
+            actionType: constants.ADD_EXPEND,
+            data: data
         })
     },
-    addExpend(){
+    addIncome(data){
         AppDispatcher.dispatch({
-            actionType: constants.ADD_EXPEND
+            actionType: constants.ADD_INCOME,
+            data: data
         })
     }
 };

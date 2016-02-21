@@ -2,10 +2,16 @@
  * Created by liangningcong on 16/1/17.
  */
 var React = require('react');
-var ListItem = require('../ListItem/listItem');
+var ListItem = require('../listItem/listItem');
+var Actions = require('../../actions/accountActions');
 
 var Modal = React.createClass({
-    _postNewRecord(){
+    getInitialState(){
+        return ({
+            modalId: this.props.type + '-modal'
+        })
+    },
+    postNewRecord(){
         var recordData = {
                 type: this.refs.recordType.value,
                 money: this.refs.recordMoney.value
@@ -14,29 +20,22 @@ var Modal = React.createClass({
         this.refs.recordType.value = '';
         this.refs.recordMoney.value = '';
 
-        $('#recordModal').modal('hide');
+        $('#'+ this.props.type + '-modal').modal('hide');
 
-        if(this.props.data.type === 'income') {
-            this.props.postNewIncome(recordData);
+        if(this.props.type === 'income') {
+            Actions.addIncome(recordData);
         } else {
-            this.props.postNewExpend(recordData);
+            Actions.addExpend(recordData);
         }
     },
-    getDefaultProps(){
-        return {
-            data: {
-                type: 'income',
-                name: '新增支出'
-            }
-        };
-    },
     render(){
+        var modalName = this.props.type === 'income' ? '新增收入' : '新增支出';
         return(
-            <div className="modal fade" id="recordModal" tabIndex="-1" role="dialog" aria-labelledby="recordModalLabel">
+            <div className="modal fade" id={this.state.modalId} tabIndex="-1" role="dialog" aria-labelledby="recordModalLabel">
                 <div className="modal-dialog modal-sm" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h4 className="modal-title" id="myModalLabel">{this.props.data.name}</h4>
+                            <h4 className="modal-title" id="myModalLabel">{modalName}</h4>
                         </div>
                         <div className="modal-body">
                             <form>
@@ -55,7 +54,7 @@ var Modal = React.createClass({
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" onClick={this._postNewRecord} className="btn btn-primary">确定</button>
+                            <button type="button" onClick={this.postNewRecord} className="btn btn-primary">确定</button>
                         </div>
                     </div>
                 </div>
