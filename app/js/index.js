@@ -1,28 +1,29 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var Summary = require('./components/summary/summary');
-var BasePanel = require('./components/basePanel/basePanel');
+var Header = require('./components/header/Header');
+import Daily from './components/daily/Daily'
+import Summary from './components/summary/Summary'
 
-import incomeData from './data/income_doc.json'
-import expendData from './data/expend_doc.json'
+import { Router, Route, hashHistory, Link, IndexRoute } from 'react-router'
 
 
 var App = React.createClass({
-    getInitialState(){
-        return {
-            incomeList: incomeData.income,
-            expendList: expendData.expend
-        }
-    },
     render(){
         return (
             <div>
-                <Summary />
+                <Header />
                 <div className="container">
                     <div className="row">
-                        <BasePanel data={incomeData.income} type="income"/>
-                        <BasePanel data={expendData.expend} type="expend"/>
+                        <nav className="col-md-1">
+                            <ul role="nav">
+                                <li><Link to="/daily">记一笔</Link></li>
+                                <li><Link to="/summary">统计</Link></li>
+                            </ul>
+                        </nav>
+                        <div className="col-md-11">
+                            {this.props.children}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -30,4 +31,13 @@ var App = React.createClass({
     }
 });
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(
+    <Router history={hashHistory}>
+        <Route path="/" component={App}>
+            <IndexRoute component={Daily} />
+            <Route path="/daily" component={Daily} />
+            <Route path="/summary" component={Summary}/>
+        </Route>
+    </Router>,
+    document.getElementById('app')
+);

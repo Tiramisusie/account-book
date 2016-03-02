@@ -67,7 +67,7 @@ var Income = React.createClass({
     },
     render(){
         return (
-            <div id={this.state.type} className="base-panel">
+            <div id={this.state.type} className="col-md-6">
                 <div className="base-panel-head">
                     <h3 className="total-title">
                         {this.state.type === 'income' ? '总收入' : '总支出'}

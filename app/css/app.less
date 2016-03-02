@@ -17,25 +17,10 @@ body {
   height: 100vh;
 }
 
-#summary {
+#header {
   background: #5B73A7;
   width: 100vw;
   height: @summary-height;
-}
-
-.base-panel {
-  width: 35%;
-  position: absolute;
-  top: @summary-height;
-  bottom: 0;
-}
-
-#income {
-  left: @main-panel-left-right;
-}
-
-#expend {
-  right: @main-panel-left-right;
 }
 
 //--------panel header----------
@@ -79,13 +64,11 @@ body {
   margin-right: 5px;
 }
 
-@btns-list-width: 20px;
 .btns-list {
   position: absolute;
-  right: -@btns-list-width;
   top: 60px;
   background-color: #bbb;
-  width: @btns-list-width;
+  width: 20px;
   height: 40px;
   border-radius: 0 10px 10px 0;
   text-align: center;
@@ -103,8 +86,6 @@ body {
 //--------panel chart----------
 .base-panel-chart {
   height: 200px;
-  position: absolute;
-  bottom: 0;
   width: 100%;
 }
 

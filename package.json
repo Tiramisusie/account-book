@@ -9,7 +9,8 @@
   "dependencies": {
     "randomcolor": "^0.4.3",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "react-router": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.2.3",

@@ -3,14 +3,14 @@
  */
 var React = require('react');
 
-var Summary = React.createClass({
+var Header = React.createClass({
    render(){
        return (
-           <div id="summary">
+           <div id="header">
 
            </div>
        )
    }
 });
 
-module.exports = Summary;
+module.exports = Header;
