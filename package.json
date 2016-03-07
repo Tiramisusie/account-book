@@ -7,7 +7,6 @@
   },
   "description": "a webapp, based on react, redux",
   "dependencies": {
-    "randomcolor": "^0.4.3",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-router": "^2.0.0"

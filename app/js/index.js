@@ -13,14 +13,14 @@ var App = React.createClass({
         return (
             <div>
                 <Header />
+                <nav className="nav-bar">
+                    <ul role="nav">
+                        <li><Link to="/daily">记一笔</Link></li>
+                        <li><Link to="/summary">统计</Link></li>
+                    </ul>
+                </nav>
                 <div className="container">
                     <div className="row">
-                        <nav className="col-md-1">
-                            <ul role="nav">
-                                <li><Link to="/daily">记一笔</Link></li>
-                                <li><Link to="/summary">统计</Link></li>
-                            </ul>
-                        </nav>
                         <div className="col-md-11">
                             {this.props.children}
                         </div>

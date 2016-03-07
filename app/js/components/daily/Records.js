@@ -67,7 +67,7 @@ var Income = React.createClass({
     },
     render(){
         return (
-            <div id={this.state.type} className="col-md-6">
+            <div id={this.state.type} className="col-md-5">
                 <div className="base-panel-head">
                     <h3 className="total-title">
                         {this.state.type === 'income' ? '总收入' : '总支出'}
@@ -75,15 +75,15 @@ var Income = React.createClass({
                             <span className="total-currency">CNY</span>
                             <span className="total-num">{this.state.totalMoney}</span>
                         </span>
+                        <span className="add-record" onClick={this.handleClick}>
+                            {'+'}
+                        </span>
                     </h3>
                 </div>
                 <div className="base-panel-list">
                     <ul className="record-list" id="income-list">
                         {this.state.listData}
                     </ul>
-                </div>
-                <div className="btns-list">
-                    <a href="#" onClick={this.handleClick} className="add-record" title="新增收入">+</a>
                 </div>
                 <div className="base-panel-chart">
                     <MyChart data={this.state.chartData} type={this.state.type}/>

@@ -2,7 +2,7 @@
  * Created by liangningcong on 16/1/10.
  */
 var React = require('react');
-var randomColor = require('randomcolor');
+import Please from '../../libs/Please'
 
 var MyChart = React.createClass({
     /**
@@ -17,7 +17,7 @@ var MyChart = React.createClass({
         oriData.map(function(cur){
             chartData.push({
                 value: cur.money * 1,
-                color: randomColor(),
+                color: Please.make_color(),
                 label: cur.type
             })
         });
