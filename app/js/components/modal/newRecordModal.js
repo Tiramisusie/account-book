@@ -3,7 +3,7 @@
  */
 var React = require('react');
 var ListItem = require('../listItem/listItem');
-var Actions = require('../../actions/accountActions');
+import AccountStore from '../../stores/AccountStore'
 
 var Modal = React.createClass({
     getInitialState(){
@@ -23,9 +23,9 @@ var Modal = React.createClass({
         $('#'+ this.props.type + '-modal').modal('hide');
 
         if(this.props.type === 'income') {
-            Actions.addIncome(recordData);
+            AccountStore.addIncome(recordData);
         } else {
-            Actions.addExpend(recordData);
+            AccountStore.addExpend(recordData);
         }
     },
     render(){

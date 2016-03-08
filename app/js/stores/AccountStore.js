@@ -1,23 +1,20 @@
 /**
  * Created by liangningcong on 16/2/19.
  */
-var AppDispatcher = require('../dispatcher/appDispatcher');
 var constants = require('../constants/accountConstants');
 var EventStore = require('./EventStore');
+import { Store } from '../utils/utils'
 
-AppDispatcher.register(function(action) {
-    switch (action.actionType) {
-        case constants.ADD_EXPEND:
-            ActionStore.addExpend(action.data);
-            break;
-        case constants.ADD_INCOME:
-            ActionStore.addIncome(action.data);
-            break;
-    }
-});
+var Api = {
+    
+};
 
-var ActionStore = {
-    addIncome(data){
+var AccountStore = {
+    /**
+     * @param date 日期
+     * @param data 数据
+     */
+    addIncome(date, data){
         EventStore.emitEvent(constants.ADD_INCOME, data);
     },
     addExpend(data){
@@ -25,4 +22,4 @@ var ActionStore = {
     }
 };
 
-module.exports = ActionStore;
+export default AccountStore;

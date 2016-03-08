@@ -4,7 +4,6 @@
 var React = require('react');
 var ListItem = require('../listItem/listItem');
 var MyChart = require('../chart/chart');
-var Actions = require('../../actions/accountActions');
 var EventStore = require('../../stores/EventStore');
 var Constants = require('../../constants/accountConstants');
 var AccountStore = require('../../stores/AccountStore');
@@ -20,6 +19,7 @@ var Income = React.createClass({
             type: this.props.type
         })
     },
+
     componentDidMount(){
         if(this.props.type === 'income') {
             EventStore.addEventChangeListener(Constants.ADD_INCOME, this.addNewItem);
@@ -27,6 +27,7 @@ var Income = React.createClass({
             EventStore.addEventChangeListener(Constants.ADD_EXPEND, this.addNewItem);
         }
     },
+
     componentWillUnmount(){
         if(this.props.type === 'income') {
             EventStore.removeEventChangeListener(Constants.ADD_INCOME, this.addNewItem);
@@ -34,6 +35,7 @@ var Income = React.createClass({
             EventStore.removeEventChangeListener(Constants.ADD_EXPEND, this.addNewItem);
         }
     },
+
     propsToState(listdata){
         var itemArr = [],
             totalMoney = 0,
@@ -52,6 +54,7 @@ var Income = React.createClass({
             chartData: listData
         };
     },
+
     addNewItem(data){
         var newProps = this.props.data.concat(data),
             newState = this.propsToState(newProps);
@@ -61,10 +64,12 @@ var Income = React.createClass({
             chartData: newProps
         })
     },
+
     handleClick(e){
         e.preventDefault();
         $('#'+ this.state.type +'-modal').modal('show');
     },
+
     render(){
         return (
             <div id={this.state.type} className="col-md-5">
