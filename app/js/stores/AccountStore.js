@@ -6,16 +6,23 @@ var EventStore = require('./EventStore');
 import { Store } from '../utils/utils'
 
 var Api = {
-    
+    addIncome(data, date){
+        var timeStamp = date.getTime(),
+            oldData = Store.get(timeStamp);
+
+        if( !!oldData ) {
+            Store.set(timeStamp, oldData.concat(data));
+        } else {
+            Store.set(timeStamp, [data]);
+        }
+
+        EventStore.emitEvent(constants.ADD_INCOME, data);
+    }
 };
 
 var AccountStore = {
-    /**
-     * @param date 日期
-     * @param data 数据
-     */
-    addIncome(date, data){
-        EventStore.emitEvent(constants.ADD_INCOME, data);
+    addIncome(data, date=new Date()){
+        Api.addIncome(data, date);
     },
     addExpend(data){
         EventStore.emitEvent(constants.ADD_EXPEND, data);

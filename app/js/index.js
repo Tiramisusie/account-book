@@ -5,6 +5,8 @@ var Header = require('./components/header/Header');
 import Daily from './components/daily/Daily'
 import Summary from './components/summary/Summary'
 
+import { Row, Col, Button } from 'antd'
+
 import { Router, Route, hashHistory, Link, IndexRoute } from 'react-router'
 
 
@@ -12,20 +14,23 @@ var App = React.createClass({
     render(){
         return (
             <div>
+                <Button type="primary">hello</Button>
+                <Row type="flex">
+                    <Col span="12">.col-12</Col>
+                    <Col span="12">.col-12</Col>
+                </Row>
                 <Header />
-                <nav className="nav-bar">
-                    <ul role="nav">
-                        <li><Link to="/daily">记一笔</Link></li>
-                        <li><Link to="/summary">统计</Link></li>
-                    </ul>
-                </nav>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-11">
-                            {this.props.children}
-                        </div>
-                    </div>
-                </div>
+                <Row>
+                    <Col span="4">
+                        <nav className="nav-bar">
+                            <ul role="nav">
+                                <li><Link to="/daily">记一笔</Link></li>
+                                <li><Link to="/summary">统计</Link></li>
+                            </ul>
+                        </nav>
+                    </Col>
+                    {this.props.children}
+                </Row>
             </div>
         )
     }

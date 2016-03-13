@@ -8,6 +8,7 @@ var EventStore = require('../../stores/EventStore');
 var Constants = require('../../constants/accountConstants');
 var AccountStore = require('../../stores/AccountStore');
 var Modal = require('../modal/newRecordModal');
+import { Col } from 'antd'
 
 var Income = React.createClass({
     getInitialState(){
@@ -16,7 +17,8 @@ var Income = React.createClass({
             listData: data.listData,
             totalMoney: data.totalMoney,
             chartData: data.chartData,
-            type: this.props.type
+            type: this.props.type,
+            data: this.props.data
         })
     },
 
@@ -56,12 +58,13 @@ var Income = React.createClass({
     },
 
     addNewItem(data){
-        var newProps = this.props.data.concat(data),
+        var newProps = this.state.data.concat(data),
             newState = this.propsToState(newProps);
         this.setState({
             listData: newState.listData,
             totalMoney: newState.totalMoney,
-            chartData: newProps
+            chartData: newProps,
+            data: newProps
         })
     },
 
@@ -71,14 +74,16 @@ var Income = React.createClass({
     },
 
     render(){
+        var {listData, totalMoney, chartData, type} = this.state;
+
         return (
-            <div id={this.state.type} className="col-md-5">
+            <Col id={type} span="7">
                 <div className="base-panel-head">
                     <h3 className="total-title">
-                        {this.state.type === 'income' ? '总收入' : '总支出'}
+                        {type === 'income' ? '总收入' : '总支出'}
                         <span className="total-money">
                             <span className="total-currency">CNY</span>
-                            <span className="total-num">{this.state.totalMoney}</span>
+                            <span className="total-num">{totalMoney}</span>
                         </span>
                         <span className="add-record" onClick={this.handleClick}>
                             {'+'}
@@ -87,14 +92,14 @@ var Income = React.createClass({
                 </div>
                 <div className="base-panel-list">
                     <ul className="record-list" id="income-list">
-                        {this.state.listData}
+                        {listData}
                     </ul>
                 </div>
                 <div className="base-panel-chart">
-                    <MyChart data={this.state.chartData} type={this.state.type}/>
+                    <MyChart data={chartData} type={type}/>
                 </div>
-                <Modal type={this.state.type}/>
-            </div>
+                <Modal type={type}/>
+            </Col>
         )
     }
 });
