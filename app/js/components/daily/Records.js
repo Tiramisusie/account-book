@@ -5,7 +5,7 @@ var React = require('react');
 var ListItem = require('../listItem/listItem');
 var MyChart = require('../chart/chart');
 var EventStore = require('../../stores/EventStore');
-var Constants = require('../../constants/accountConstants');
+import constant from '../../constants/accountConstants'
 var AccountStore = require('../../stores/AccountStore');
 var Modal = require('../modal/newRecordModal');
 import { Col } from 'antd'
@@ -16,25 +16,36 @@ var Income = React.createClass({
         return ({
             listData: data.listData,
             totalMoney: data.totalMoney,
-            chartData: data.chartData,
+            chartData: this.props.data,
             type: this.props.type,
-            data: this.props.data
+            data: this.props.data,
+            [`${this.props.type}Visible`]: false
         })
     },
 
     componentDidMount(){
         if(this.props.type === 'income') {
-            EventStore.addEventChangeListener(Constants.ADD_INCOME, this.addNewItem);
+            EventStore.addEventChangeListener(constant.ADD_INCOME, this.addNewItem);
         } else {
-            EventStore.addEventChangeListener(Constants.ADD_EXPEND, this.addNewItem);
+            EventStore.addEventChangeListener(constant.ADD_EXPEND, this.addNewItem);
         }
+    },
+
+    componentWillReceiveProps(nextProps){
+        let newState = this.propsToState(nextProps.data);
+        this.setState({
+            listData: newState.listData,
+            totalMoney: newState.totalMoney,
+            chartData: nextProps.data,
+            data: nextProps.data
+        })
     },
 
     componentWillUnmount(){
         if(this.props.type === 'income') {
-            EventStore.removeEventChangeListener(Constants.ADD_INCOME, this.addNewItem);
+            EventStore.removeEventChangeListener(constant.ADD_INCOME, this.addNewItem);
         } else {
-            EventStore.removeEventChangeListener(Constants.ADD_EXPEND, this.addNewItem);
+            EventStore.removeEventChangeListener(constant.ADD_EXPEND, this.addNewItem);
         }
     },
 
@@ -52,8 +63,7 @@ var Income = React.createClass({
 
         return {
             listData: itemArr,
-            totalMoney: totalMoney,
-            chartData: listData
+            totalMoney: totalMoney
         };
     },
 
@@ -64,20 +74,24 @@ var Income = React.createClass({
             listData: newState.listData,
             totalMoney: newState.totalMoney,
             chartData: newProps,
-            data: newProps
+            data: newProps,
+            [`${this.props.type}Visible`]: false
         })
     },
 
     handleClick(e){
         e.preventDefault();
-        $('#'+ this.state.type +'-modal').modal('show');
+        this.setState({
+            [`${this.props.type}Visible`]: true
+        })
     },
 
     render(){
-        var {listData, totalMoney, chartData, type} = this.state;
+        var {listData, totalMoney, chartData, type} = this.state,
+            style = {marginLeft: '100px'};
 
         return (
-            <Col id={type} span="7">
+            <Col id={type} span="9" style={ type==='expend' ? style : null }>
                 <div className="base-panel-head">
                     <h3 className="total-title">
                         {type === 'income' ? '总收入' : '总支出'}
@@ -98,7 +112,7 @@ var Income = React.createClass({
                 <div className="base-panel-chart">
                     <MyChart data={chartData} type={type}/>
                 </div>
-                <Modal type={type}/>
+                <Modal type={type} visible={this.state[`${type}Visible`]}/>
             </Col>
         )
     }

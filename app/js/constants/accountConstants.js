@@ -3,9 +3,10 @@
  */
 var keymirror  = require('keymirror');
 
-module.exports = keymirror({
+var constant = keymirror({
     ADD_INCOME: null,
     ADD_EXPEND: null,
-    POST_NEW_INCOME: null,
-    POST_NEW_EXPEND: null
+    GET_RECORDS: null
 });
+
+export default constant;

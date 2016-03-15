@@ -14,11 +14,6 @@ var App = React.createClass({
     render(){
         return (
             <div>
-                <Button type="primary">hello</Button>
-                <Row type="flex">
-                    <Col span="12">.col-12</Col>
-                    <Col span="12">.col-12</Col>
-                </Row>
                 <Header />
                 <Row>
                     <Col span="4">
@@ -41,7 +36,7 @@ ReactDOM.render(
         <Route path="/" component={App}>
             <IndexRoute component={Daily} />
             <Route path="/daily" component={Daily} />
-            <Route path="/summary" component={Summary}/>
+            <Route path="/summary" component={Summary} />
         </Route>
     </Router>,
     document.getElementById('app')

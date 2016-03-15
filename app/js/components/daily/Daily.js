@@ -1,22 +1,45 @@
 import React from 'react'
 import Records from './Records'
-import { Col } from 'antd'
+import constant from '../../constants/accountConstants'
+import EventStore from '../../stores/EventStore'
+import AccountStore from '../../stores/AccountStore'
+import { Row, Col } from 'antd'
 
-export default class Main extends React.Component{
-    constructor(){
-        super();
-        this.state = {
+var Main = React.createClass ({
+    getInitialState(){
+        return {
             incomeList: [],
             expendList: []
         }
-    }
+    },
 
-    render(){
+    componentDidMount(){
+        EventStore.addEventChangeListener(constant.GET_RECORDS, this.handleLocalRecords);
+        AccountStore.getRecords();
+    },
+
+    componentWillUnmount(){
+        EventStore.removeEventChangeListener(constant.GET_RECORDS, this.handleLocalRecords);
+    },
+
+    handleLocalRecords(data){
+        var state = data ? data : {income:[], expend:[]};
+        this.setState({
+            incomeList: state.income,
+            expendList: state.expend
+        })
+    },
+
+    render() {
         return (
             <Col span="20">
-                <Records data={this.state.incomeList} type="income"/>
-                <Records data={this.state.expendList} type="expend"/>
+                <Row type="flex" justify="start">
+                    <Records data={this.state.incomeList} type="income"/>
+                    <Records data={this.state.expendList} type="expend"/>
+                </Row>
             </Col>
         )
     }
-}
+});
+
+export default Main;

@@ -1,9 +1,11 @@
 import React from 'react'
 
-export default class Summary extends React.Component{
+var Summary = React.createClass({
     render(){
         return(
             <div>统计</div>
         )
     }
-}
+});
+
+export default Summary;

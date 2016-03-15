@@ -1,22 +1,47 @@
 /**
  * Created by liangningcong on 16/2/19.
  */
-var constants = require('../constants/accountConstants');
+import constant from '../constants/accountConstants'
 var EventStore = require('./EventStore');
-import { Store } from '../utils/utils'
+import { Store, Utils } from '../utils/utils'
 
 var Api = {
     addIncome(data, date){
-        var timeStamp = date.getTime(),
-            oldData = Store.get(timeStamp);
+        var timeStamp = Utils.getTimeStamp(date),
+            oldData = Store.get(timeStamp),
+            newData;
 
         if( !!oldData ) {
-            Store.set(timeStamp, oldData.concat(data));
+            oldData.income.push(data);
+            newData = oldData;
         } else {
-            Store.set(timeStamp, [data]);
+            newData = {income: [data], expend: []};
         }
+        Store.set(timeStamp, newData);
 
-        EventStore.emitEvent(constants.ADD_INCOME, data);
+        EventStore.emitEvent(constant.ADD_INCOME, data);
+    },
+
+    addExpend(data, date){
+        var timeStamp = Utils.getTimeStamp(date),
+            oldData = Store.get(timeStamp),
+            newData;
+
+        if( !!oldData ) {
+            oldData.expend.push(data);
+            newData = oldData;
+        } else {
+            newData = {expend: [data], income: []};
+        }
+        Store.set(timeStamp, newData);
+
+        EventStore.emitEvent(constant.ADD_EXPEND, data);
+    },
+
+    getRecords(date){
+        var data = Store.get(Utils.getTimeStamp(date));
+
+        EventStore.emitEvent(constant.GET_RECORDS, data);
     }
 };
 
@@ -24,8 +49,11 @@ var AccountStore = {
     addIncome(data, date=new Date()){
         Api.addIncome(data, date);
     },
-    addExpend(data){
-        EventStore.emitEvent(constants.ADD_EXPEND, data);
+    addExpend(data, date=new Date()){
+        Api.addExpend(data, date);
+    },
+    getRecords(date=new Date()){
+        Api.getRecords(date);
     }
 };
 

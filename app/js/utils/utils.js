@@ -52,3 +52,9 @@ export var Store = (function() {
 
     return store
 }());
+
+export var Utils = {
+    getTimeStamp(date){
+        return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+    }
+};
