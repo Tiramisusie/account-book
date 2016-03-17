@@ -1,14 +1,11 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-
-var Header = require('./components/header/Header');
-import Daily from './components/daily/Daily'
-import Summary from './components/summary/Summary'
-
-import { Row, Col, Button } from 'antd'
-
-import { Router, Route, hashHistory, Link, IndexRoute } from 'react-router'
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Header from './js/components/header/Header';
+import Daily from './js/components/daily/Daily';
+import Summary from './js/components/summary/Summary';
+import { Row, Col, Button } from 'antd';
+import { Router, Route, hashHistory, Link, IndexRoute } from 'react-router';
+require("!style!css!less!./css/app.less");
 
 var App = React.createClass({
     render(){

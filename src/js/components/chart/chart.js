@@ -38,13 +38,13 @@ var MyChart = React.createClass({
                 //销毁旧的图表
                 incomeChart.destroy();
             }
-            incomeChart = new Chart(ctx).Doughnut(data);
+            var incomeChart = new Chart(ctx).Doughnut(data);
         } else {
             if( expendChart ) {
                 //销毁旧的图表
                 expendChart.destroy();
             }
-            expendChart = new Chart(ctx).Doughnut(data);
+            var expendChart = new Chart(ctx).Doughnut(data);
         }
 
 

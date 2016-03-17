@@ -4,7 +4,8 @@
 var React = require('react');
 var ListItem = require('../listItem/listItem');
 import AccountStore from '../../stores/AccountStore'
-import { Modal } from 'antd'
+import { Modal, Form, Input } from 'antd'
+const FormItem = Form.Item;
 
 var MyModal = React.createClass({
     getInitialState(){
@@ -43,24 +44,24 @@ var MyModal = React.createClass({
     },
 
     render(){
-        var modalName = this.props.type === 'income' ? '新增收入' : '新增支出';
-        return(
+        var modalName = this.props.type === 'income' ? '新增收入' : '新增支出',
+            formItemLayout = {
+                labelCol: {span: 6},
+                wrapperCol: {span: 14}
+            };
+
+        return (
             <Modal id={this.state.modalId} title={modalName} visible={this.state.visible}
-                onOk={this.handleOK} onCancel={this.handleCancel}
+                   onOk={this.handleOK} onCancel={this.handleCancel} width="500"
             >
-                <form>
-                    <div className="form-group">
-                        <label htmlFor="recordType">类型</label>
-                        <input type="text" className="form-control" ref="recordType" id="recordType" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="recordMoney">金额</label>
-                        <div className="input-group">
-                            <div className="input-group-addon">￥</div>
-                            <input type="number" className="form-control" ref="recordMoney" id="recordMoney" />
-                        </div>
-                    </div>
-                </form>
+                <Form horizontal>
+                    <FormItem label="类型" {...formItemLayout}>
+                        <Input type="text" ref="recordType" id="recordType"/>
+                    </FormItem>
+                    <FormItem label="金额" {...formItemLayout}>
+                        <Input type="number" ref="recordMoney" id="recordMoney"/>
+                    </FormItem>
+                </Form>
             </Modal>
         )
     }

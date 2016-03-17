@@ -8,7 +8,7 @@ var EventStore = require('../../stores/EventStore');
 import constant from '../../constants/accountConstants'
 var AccountStore = require('../../stores/AccountStore');
 var Modal = require('../modal/newRecordModal');
-import { Col } from 'antd'
+import { Row, Col, Button, Icon } from 'antd'
 
 var Income = React.createClass({
     getInitialState(){
@@ -93,15 +93,21 @@ var Income = React.createClass({
         return (
             <Col id={type} span="9" style={ type==='expend' ? style : null }>
                 <div className="base-panel-head">
-                    <h3 className="total-title">
-                        {type === 'income' ? '总收入' : '总支出'}
-                        <span className="total-money">
-                            <span className="total-currency">CNY</span>
-                            <span className="total-num">{totalMoney}</span>
-                        </span>
-                        <span className="add-record" onClick={this.handleClick}>
-                            {'+'}
-                        </span>
+                    <h3>
+                        <Row>
+                            <Col span="4" style={{fontSize: '2rem'}}>
+                                {type === 'income' ? '总收入' : '总支出'}
+                            </Col>
+                            <Col span="4" style={{fontSize: "2rem"}}>
+                                {totalMoney}
+                                <small style={{marginLeft: "5px"}}>¥</small>
+                            </Col>
+                            <Col span="4" offset="12">
+                                <Button type="primary" shape="circle" onClick={this.handleClick}>
+                                    <Icon type="plus"/>
+                                </Button>
+                            </Col>
+                        </Row>
                     </h3>
                 </div>
                 <div className="base-panel-list">
