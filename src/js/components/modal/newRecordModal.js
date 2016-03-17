@@ -52,13 +52,13 @@ var MyModal = React.createClass({
 
         return (
             <Modal id={this.state.modalId} title={modalName} visible={this.state.visible}
-                   onOk={this.handleOK} onCancel={this.handleCancel} width="500"
+                   onOk={this.handleOK} onCancel={this.handleCancel} width="400"
             >
                 <Form horizontal>
-                    <FormItem label="类型" {...formItemLayout}>
+                    <FormItem label="类型: " {...formItemLayout}>
                         <Input type="text" ref="recordType" id="recordType"/>
                     </FormItem>
-                    <FormItem label="金额" {...formItemLayout}>
+                    <FormItem label="金额: " {...formItemLayout}>
                         <Input type="number" ref="recordMoney" id="recordMoney"/>
                     </FormItem>
                 </Form>

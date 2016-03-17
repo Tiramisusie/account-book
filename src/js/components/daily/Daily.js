@@ -32,7 +32,7 @@ var Main = React.createClass ({
 
     render() {
         return (
-            <Col span="20">
+            <Col span="21" className="panel-container">
                 <Row type="flex" justify="start">
                     <Records data={this.state.incomeList} type="income"/>
                     <Records data={this.state.expendList} type="expend"/>

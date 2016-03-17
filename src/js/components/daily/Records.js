@@ -89,6 +89,7 @@ var Income = React.createClass({
     render(){
         var {listData, totalMoney, chartData, type} = this.state,
             style = {marginLeft: '100px'};
+        let emptyHolder = <div style={{width:'100%',textAlign:'center',fontSize:'3rem',color:'#ccc'}}>空的</div>;
 
         return (
             <Col id={type} span="9" style={ type==='expend' ? style : null }>
@@ -112,11 +113,11 @@ var Income = React.createClass({
                 </div>
                 <div className="base-panel-list">
                     <ul className="record-list" id="income-list">
-                        {listData}
+                        {listData.length === 0 ? emptyHolder: listData}
                     </ul>
                 </div>
                 <div className="base-panel-chart">
-                    <MyChart data={chartData} type={type}/>
+                    {chartData.length === 0 ? emptyHolder : <MyChart data={chartData} type={type}/>}
                 </div>
                 <Modal type={type} visible={this.state[`${type}Visible`]}/>
             </Col>
