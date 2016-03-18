@@ -5,8 +5,8 @@ var React = require('react');
 var ListItem = require('../listItem/listItem');
 var MyChart = require('../chart/chart');
 var EventStore = require('../../stores/EventStore');
+import AccountStore from '../../stores/AccountStore'
 import constant from '../../constants/accountConstants'
-var AccountStore = require('../../stores/AccountStore');
 var Modal = require('../modal/newRecordModal');
 import { Row, Col, Button, Icon } from 'antd'
 
@@ -61,6 +61,12 @@ var Income = React.createClass({
             totalMoney += listData[i].money * 1;
         }
 
+        if(this.props.type === 'income'){
+            AccountStore.setIncomeCount(totalMoney);
+        } else {
+            AccountStore.setExpendCount(totalMoney);
+        }
+
         return {
             listData: itemArr,
             totalMoney: totalMoney
@@ -89,7 +95,7 @@ var Income = React.createClass({
     render(){
         var {listData, totalMoney, chartData, type} = this.state,
             style = {marginLeft: '100px'};
-        let emptyHolder = <div style={{width:'100%',textAlign:'center',fontSize:'3rem',color:'#ccc'}}>空的</div>;
+        let emptyHolder = <div className="emptyHolder">空的</div>;
 
         return (
             <Col id={type} span="9" style={ type==='expend' ? style : null }>

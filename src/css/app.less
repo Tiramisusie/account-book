@@ -30,6 +30,35 @@ body {
   background: #5B73A7;
   width: 100vw;
   height: @summary-height;
+  position: relative;
+}
+
+.app-title {
+  font-size: 3rem;
+  color: #222;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.date-picker {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.balance{
+  position: absolute;
+  width: 10rem;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  font-size: 1rem;
+  color: #000;
+  span{
+    font-size: 2em;
+  }
 }
 
 //--------panel header----------
@@ -86,6 +115,14 @@ body {
   text-align: center;
   cursor: pointer;
   float: right;
+}
+
+.emptyHolder {
+  width: 100%;
+  font-size: 3rem;
+  color: #ccc;
+  text-align: center;
+  margin-top: 50px;
 }
 
 

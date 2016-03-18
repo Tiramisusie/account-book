@@ -5,6 +5,9 @@ import constant from '../constants/accountConstants'
 var EventStore = require('./EventStore');
 import { Store, Utils } from '../utils/utils'
 
+var incomeCount = 0,
+  expendCount = 0;
+
 var Api = {
     addIncome(data, date){
         var timeStamp = Utils.getTimeStamp(date),
@@ -36,12 +39,6 @@ var Api = {
         Store.set(timeStamp, newData);
 
         EventStore.emitEvent(constant.ADD_EXPEND, data);
-    },
-
-    getRecords(date){
-        var data = Store.get(Utils.getTimeStamp(date));
-
-        EventStore.emitEvent(constant.GET_RECORDS, data);
     }
 };
 
@@ -53,7 +50,22 @@ var AccountStore = {
         Api.addExpend(data, date);
     },
     getRecords(date=new Date()){
-        Api.getRecords(date);
+        var data = Store.get(Utils.getTimeStamp(date));
+        EventStore.emitEvent(constant.GET_RECORDS, data);
+    },
+    changeDate(date){
+        EventStore.emitEvent(constant.CHANGE_DATE, date);
+    },
+    setIncomeCount(num){
+        incomeCount = num;
+        EventStore.emitEvent(constant.INCOME_CHANGE, this.getBalance());
+    },
+    setExpendCount(num){
+        expendCount = num;
+        EventStore.emitEvent(constant.EXPEND_CHANGE, this.getBalance());
+    },
+    getBalance(){
+        return incomeCount - expendCount;
     }
 };
 

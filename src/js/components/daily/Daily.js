@@ -4,6 +4,7 @@ import constant from '../../constants/accountConstants'
 import EventStore from '../../stores/EventStore'
 import AccountStore from '../../stores/AccountStore'
 import { Row, Col } from 'antd'
+import {Utils} from '../../utils/utils'
 
 var Main = React.createClass ({
     getInitialState(){
@@ -15,11 +16,17 @@ var Main = React.createClass ({
 
     componentDidMount(){
         EventStore.addEventChangeListener(constant.GET_RECORDS, this.handleLocalRecords);
+        EventStore.addEventChangeListener(constant.CHANGE_DATE, this.changeDate);
         AccountStore.getRecords();
     },
 
     componentWillUnmount(){
         EventStore.removeEventChangeListener(constant.GET_RECORDS, this.handleLocalRecords);
+        EventStore.removeEventChangeListener(constant.CHANGE_DATE, this.changeDate);
+    },
+
+    changeDate(date){
+        AccountStore.getRecords(date)
     },
 
     handleLocalRecords(data){

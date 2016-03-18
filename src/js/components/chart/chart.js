@@ -3,6 +3,7 @@
  */
 var React = require('react');
 import Please from '../../libs/Please'
+var incomeChart, expendChart;
 
 var MyChart = React.createClass({
   /**
@@ -38,13 +39,13 @@ var MyChart = React.createClass({
         //销毁旧的图表
         incomeChart.destroy();
       }
-      var incomeChart = new Chart(ctx).Doughnut(data);
+      incomeChart = new Chart(ctx).Doughnut(data);
     } else {
       if (expendChart) {
         //销毁旧的图表
         expendChart.destroy();
       }
-      var expendChart = new Chart(ctx).Doughnut(data);
+      expendChart = new Chart(ctx).Doughnut(data);
     }
 
 

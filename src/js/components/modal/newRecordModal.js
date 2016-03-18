@@ -28,13 +28,16 @@ var MyModal = React.createClass({
     },
 
     handleOK(){
+        let type = this.refs.recordType,
+          money = this.refs.recordMoney;
+
         var recordData = {
-            type: this.refs.recordType.value,
-            money: this.refs.recordMoney.value
+            type: type.value,
+            money: money.value
         };
 
-        this.refs.recordType.value = '';
-        this.refs.recordMoney.value = '';
+        type.value = '';
+        money.value = '';
 
         if(this.props.type === 'income') {
             AccountStore.addIncome(recordData);
@@ -56,10 +59,14 @@ var MyModal = React.createClass({
             >
                 <Form horizontal>
                     <FormItem label="类型: " {...formItemLayout}>
-                        <Input type="text" ref="recordType" id="recordType"/>
+                        <input type="text" id="recordType" ref="recordType"
+                               className="ant-input ant-input-lg" style={{marginLeft:'10px'}}
+                        />
                     </FormItem>
                     <FormItem label="金额: " {...formItemLayout}>
-                        <Input type="number" ref="recordMoney" id="recordMoney"/>
+                        <input type="number" id="recordMoney" ref="recordMoney"
+                               className="ant-input ant-input-lg" style={{marginLeft:'10px'}}
+                        />
                     </FormItem>
                 </Form>
             </Modal>
