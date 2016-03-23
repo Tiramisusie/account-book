@@ -66,7 +66,6 @@ body {
 
 //--------panel list-----------
 .panel-container{
-  padding-left: 50px;
   border-left: 1px solid #ddd;
 }
 
@@ -132,11 +131,11 @@ body {
   height: @chart-height;
   width: 100%;
   border-top: 2px solid #2D767F;
+  padding-top: 20px;
 }
 
-.chartContainer {
-  position: absolute;
-  bottom: 20px;
+.chart-container {
+
 }
 
 //---------modal---------
@@ -172,4 +171,23 @@ a.activeLink {
   height: 50px;
   color: #2db7f5;
   border-right: 2px solid #2db7f5;
+}
+
+.range-picker {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.chart-wrapper {
+  width: 99%;
+  display: flex;
+  height: @chart-height + 50px;
+  border-top: 1px solid #eee;
+  margin: 5px;
+}
+
+.sum-chart-container {
+  width: 50%;
+  padding-top: 20px;
 }

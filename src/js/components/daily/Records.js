@@ -123,7 +123,7 @@ var Income = React.createClass({
                     </ul>
                 </div>
                 <div className="base-panel-chart">
-                    {chartData.length === 0 ? emptyHolder : <MyChart data={chartData} type={type}/>}
+                    {chartData.length === 0 ? emptyHolder : <MyChart data={chartData} name={type} type="doughnut"/>}
                 </div>
                 <Modal type={type} visible={this.state[`${type}Visible`]}/>
             </Col>
