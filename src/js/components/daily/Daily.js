@@ -4,7 +4,6 @@ import constant from '../../constants/accountConstants'
 import EventStore from '../../stores/EventStore'
 import AccountStore from '../../stores/AccountStore'
 import { Row, Col } from 'antd'
-import {Utils} from '../../utils/utils'
 
 var Main = React.createClass ({
     getInitialState(){
