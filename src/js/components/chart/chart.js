@@ -1,120 +1,163 @@
-/**
- * Created by liangningcong on 16/1/10.
- */
-var React = require('react');
-import Please from '../../libs/Please'
+import React from 'react'
+import { findDOMNode } from 'react-dom'
+import EventStore from '../../stores/EventStore'
+import constant from '../../constants/accountConstants'
 
-var MyChart = React.createClass({
+export default class EChart extends React.Component{
 
-  myChart: null,  //保存 chart 对象索引
+  myChart = null;  // the chart obj
+  options = {};
 
-  propTypes: {
-    name: React.PropTypes.string,
-    data: React.PropTypes.array,        //数据
-    type: React.PropTypes.string   //图表类型: 饼图/折线图...
-  },
+  static propTypes = {
+    data: React.PropTypes.array,  //chart data
+    name: React.PropTypes.string, //name of the chart container
+    type: React.PropTypes.string  //the type of chart
+  };
 
-  componentDidMount(){
-    this.renderChart(this.props.data);
-  },
-
-  componentWillReceiveProps(nextProps){
-    if (this.props.data != nextProps.data) {
-      this.renderChart(nextProps.data);
-    }
-  },
-
-  //返回不同类型的 chart 的构造函数
-  chartFactory(type, oriData, ctx){
-    let chartData,
-      chartObj;
+  /**
+   * 初始化chart 
+   * @param type chart的类型 
+   * @param data chart的源数据
+   * @param name chart的title
+   */
+  initChart = ({type, data, name})=>{
+    let options;
+    
+    this.myChart = echarts.init(findDOMNode(this.refs[name]));
 
     switch (type) {
       case 'pie':
-      case 'doughnut':
-        chartData = this.formatPieChartData(oriData);
-        chartObj = new Chart(ctx).Doughnut(chartData, {
-          animationSteps: 60,
-          animationEasing: 'easeOutCirc'
-        });
+        options = this.setPieChart(data, name);
+        this.options = options;
         break;
-      case 'line':
-        chartData = this.formatLineChartData(oriData);
-        chartObj = new Chart(ctx).Line(chartData);
+      case 'bar':
+        options = this.setBarChart(data);
+        this.options = options;
         break;
     }
 
-    return chartObj;
-  },
+    this.myChart.setOption(options);
+  };
 
-  formatPieChartData(oriData){
-    var chartData = [];
-
-    if(oriData){
-      oriData.map(function(cur) {
-        chartData.push({
-          value: cur.money * 1,
-          color: Please.make_color(),
-          label: cur.type
-        })
-      });
-    }
-
-    return chartData;
-  },
-
-  formatLineChartData(oriData){
-    log(oriData);
-    let labels = [],
-      income = {
-        label: '收入',
-        fillColor: "rgba(220,220,220,0.2)",
-        strokeColor: "rgba(220,220,220,1)",
-        pointColor: "rgba(220,220,220,1)",
-        pointStrokeColor: "#fff",
-        pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgba(220,220,220,1)",
-        data: []
-      },
-      expend = {
-        label: "支出",
-        fillColor: "rgba(151,187,205,0.2)",
-        strokeColor: "rgba(151,187,205,1)",
-        pointColor: "rgba(151,187,205,1)",
-        pointStrokeColor: "#fff",
-        pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgba(151,187,205,1)",
-        data: []
-      };
-
-    if (oriData) {
-      oriData.map((obj)=> {
-        labels.push(obj.date);
-        income.data.push(obj.data.income);
-        expend.data.push(obj.data.expend);
-      });
-    }
-
+  setPieChart(data, title){
     return {
-      labels: labels,
-      datasets: [income, expend]
-    }
-  },
+      title: {
+        text: title,
+        left: 'left',
+        top: 'top',
+        textStyle: {
+          color: '#ccc'
+        }
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b}:{c}'
+      },
+      series: [{
+        type: 'pie',
+        name: title,
+        radius: '50%',
+        data: data.map((obj)=>{
+          return {
+            name: obj.type,
+            value: obj.money
+          }
+        })
+      }]
+    };
+  }
 
-  renderChart(oriData){
-    const {type, name} = this.props;
-    let ctx = this.refs[name].getContext('2d');
+  setBarChart(data){
+    return {
+      tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+          type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      legend: {
+        data:['利润', '支出', '收入']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis : [
+        {
+          type : 'value'
+        }
+      ],
+      yAxis : [
+        {
+          type : 'category',
+          axisTick : {show: false},
+          data : ['周一','周二','周三','周四','周五','周六','周日']
+        }
+      ],
+      series : [
+        {
+          name:'利润',
+          type:'bar',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data:[200, 170, 240, 244, 200, 220, 210]
+        },
+        {
+          name:'收入',
+          type:'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true
+            }
+          },
+          data:[320, 302, 341, 374, 390, 450, 420]
+        },
+        {
+          name:'支出',
+          type:'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'left'
+            }
+          },
+          data:[-120, -132, -101, -134, -190, -230, -210]
+        }
+      ]
+    };
 
-    if (this.myChart) {
-      //销毁旧的图表
-      this.myChart.destroy();
-    }
-    this.myChart = this.chartFactory(type, oriData, ctx);
-  },
+  }
+
+  updateChart(newData){
+    this.options.series[0].data = newData.map((obj)=>{
+      return {
+        name: obj.type,
+        value: obj.money
+      }
+    });
+
+    this.myChart.setOption(this.options);
+  }
+
+  componentDidMount(){
+    this.initChart(this.props);
+  }
+
+  componentWillReceiveProps(nextProps){
+    this.updateChart(nextProps.data);
+  }
 
   render(){
-    return <canvas ref={this.props.name}/>
+    let { name, style } = this.props;
+    
+    return <div id={name} ref={name} style={style}></div>
   }
-});
-
-module.exports = MyChart;
+}

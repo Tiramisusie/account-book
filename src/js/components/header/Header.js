@@ -1,9 +1,10 @@
 var React = require('react');
-import {DatePicker} from 'antd'
 import {Utils} from '../../utils/utils'
 import AccountStore from '../../stores/AccountStore'
 import EventStore from '../../stores/EventStore'
 import constant from '../../constants/accountConstants'
+import {DatePicker} from 'antd'
+const RangePicker = DatePicker.RangePicker;
 
 export default class Header extends React.Component{
 
@@ -11,7 +12,8 @@ export default class Header extends React.Component{
     super();
 
     this.state = {
-      balance: 0
+      balance: 0,
+      routePath: '/daily'
     }
   }
 
@@ -20,13 +22,26 @@ export default class Header extends React.Component{
     EventStore.addEventChangeListener(constant.EXPEND_CHANGE, this.getBalance);
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      routePath: nextProps.routePath
+    })
+  }
+
   componentWillUnmount(){
     EventStore.removeEventChangeListener(constant.INCOME_CHANGE, this.getBalance);
     EventStore.removeEventChangeListener(constant.EXPEND_CHANGE, this.getBalance);
   }
 
-  changeDate(date){
+  onChangeDate(date){
     AccountStore.changeDate(date);
+  }
+
+  onChangeRangeDate(date){
+    let start = date[0],
+      end = date[1];
+
+    AccountStore.getRangeRecords(start, end);
   }
 
   getBalance=(balance)=>{
@@ -37,7 +52,7 @@ export default class Header extends React.Component{
 
   render(){
     let today = Utils.getTimeStamp(new Date());
-    let balance = this.state.balance;
+    let { balance, routePath } = this.state;
 
     return (
       <div id="header">
@@ -49,7 +64,11 @@ export default class Header extends React.Component{
         </div>
 
         <div className="date-picker">
-          <DatePicker defaultValue={today} format="yyyy-MM-dd" size="large" onChange={this.changeDate} />
+          {
+            routePath === '/daily' ?
+              <DatePicker defaultValue={today} format="yyyy-MM-dd" size="large" onChange={this.onChangeDate} /> :
+              <RangePicker onChange={this.onChangeRangeDate} size="large" defaultValue={[today, today]}/>
+          }
         </div>
       </div>
     )

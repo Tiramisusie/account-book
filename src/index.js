@@ -11,13 +11,17 @@ var App = React.createClass({
   render(){
     return (
       <div>
-        <Header />
+        <Header routePath={this.props.location.pathname} />
         <Row>
           <Col span="3" style={{zIndex:'2',marginRight:'-1px'}}>
             <nav>
               <ul className="nav-ul">
-                <li className="nav-link"><Link to="/daily" activeClassName="activeLink">记一笔</Link></li>
-                <li className="nav-link"><Link to="/summary" activeClassName="activeLink">统计</Link></li>
+                <li className="nav-link">
+                  <Link to="/daily" activeClassName="activeLink" >记一笔</Link>
+                </li>
+                <li className="nav-link">
+                  <Link to="/summary" activeClassName="activeLink" >统计</Link>
+                </li>
               </ul>
             </nav>
           </Col>
@@ -33,7 +37,7 @@ ReactDOM.render(
     <Route path="/" component={App}>
       <IndexRoute component={Daily}/>
       <Route path="/daily" component={Daily}/>
-      <Route path="/summary" component={Summary}/>
+      <Route path="/summary"  component={Summary}/>
     </Route>
   </Router>,
   document.getElementById('app')

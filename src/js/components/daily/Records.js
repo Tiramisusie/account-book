@@ -3,12 +3,12 @@
  */
 var React = require('react');
 var ListItem = require('../listItem/listItem');
-var MyChart = require('../chart/chart');
 var EventStore = require('../../stores/EventStore');
 import AccountStore from '../../stores/AccountStore'
 import constant from '../../constants/accountConstants'
 var Modal = require('../modal/newRecordModal');
 import {Row, Col, Button, Icon} from 'antd'
+import EChart from '../chart/chart'
 
 var Income = React.createClass({
   getInitialState(){
@@ -126,7 +126,11 @@ var Income = React.createClass({
           </ul>
         </div>
         <div className="base-panel-chart">
-          {chartData.length === 0 ? emptyHolder : <MyChart data={chartData} name={type} type="doughnut"/>}
+          {
+            chartData.length === 0 ?
+              emptyHolder :
+              <EChart data={chartData} name={type} type="pie" style={{width:"100%",height:"200px"}}/>
+          }
         </div>
         <Modal type={type} visible={this.state[`${type}Visible`]}/>
       </Col>

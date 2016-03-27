@@ -77,16 +77,9 @@ var AccountStore = {
             let income = 0,
               expend = 0;
 
-            val.income.forEach((obj)=>{
-              income += obj.money*1;
-            });
-            val.expend.forEach((obj)=>{
-              expend += obj.money*1;
-            });
-
             response.push({
               date: key,
-              data: {income: income, expend: expend}
+              data: {income: val.income, expend: val.expend}
             });
           }
         }
