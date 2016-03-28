@@ -5,6 +5,7 @@ import EventStore from '../../stores/EventStore'
 import AccountStore from '../../stores/AccountStore'
 import constant from '../../constants/accountConstants'
 import {Utils} from '../../utils/utils'
+import moment from 'moment'
 
 var Summary = React.createClass({
 
@@ -17,10 +18,8 @@ var Summary = React.createClass({
   },
 
   componentDidMount(){
-    let today = new Date();
-
     EventStore.addEventChangeListener(constant.GET_RANGE_RECORDS, this.handleRangeRecords);
-    AccountStore.getRangeRecords(today, today);
+    AccountStore.getRangeRecords(moment().subtract(7, 'day')._d, new Date());
   },
 
   componentWillUnmount(){
@@ -28,25 +27,18 @@ var Summary = React.createClass({
   },
 
   handleRangeRecords(res){
-    let incomeData = [],
-      expendData = [],
-      lineData = [1];
-
-    res.map(obj => {
-      incomeData = incomeData.concat(obj.data.income);
-      expendData = expendData.concat(obj.data.expend);
-    });
+    let incomeData = res[0].data.income,
+      expendData = res[0].data.expend;
 
     this.setState({
       incomeData: incomeData,
       expendData: expendData,
-      lineData: lineData
+      lineData: res
     })
   },
 
   render(){
     let {incomeData, expendData, lineData} = this.state;
-    let today = Utils.getTimeStamp(new Date());
     let emptyHolder = <div className="emptyHolder">空的</div>;
 
     return (

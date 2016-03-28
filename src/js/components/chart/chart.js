@@ -68,7 +68,8 @@ export default class EChart extends React.Component{
   }
 
   setBarChart(data){
-    return {
+    log(data);
+    let options = {
       tooltip : {
         trigger: 'axis',
         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -76,7 +77,7 @@ export default class EChart extends React.Component{
         }
       },
       legend: {
-        data:['利润', '支出', '收入']
+        data:['结余', '支出', '收入']
       },
       grid: {
         left: '3%',
@@ -93,12 +94,12 @@ export default class EChart extends React.Component{
         {
           type : 'category',
           axisTick : {show: false},
-          data : ['周一','周二','周三','周四','周五','周六','周日']
+          data : []
         }
       ],
       series : [
         {
-          name:'利润',
+          name:'结余',
           type:'bar',
           label: {
             normal: {
@@ -106,7 +107,7 @@ export default class EChart extends React.Component{
               position: 'inside'
             }
           },
-          data:[200, 170, 240, 244, 200, 220, 210]
+          data:[]
         },
         {
           name:'收入',
@@ -114,10 +115,11 @@ export default class EChart extends React.Component{
           stack: '总量',
           label: {
             normal: {
-              show: true
+              show: true,
+              position: 'right'
             }
           },
-          data:[320, 302, 341, 374, 390, 450, 420]
+          data:[]
         },
         {
           name:'支出',
@@ -129,11 +131,29 @@ export default class EChart extends React.Component{
               position: 'left'
             }
           },
-          data:[-120, -132, -101, -134, -190, -230, -210]
+          data:[]
         }
       ]
     };
 
+    data.map(obj => {
+      let incomeTotal = 0,
+        expendTotal = 0;
+
+      options.yAxis[0].data.push(obj.date);
+      obj.data.income.map(income => {
+        incomeTotal += (+income.money);
+      });
+      obj.data.expend.map(expend => {
+        expendTotal += (+expend.money);
+      });
+
+      options.series[0].data.push(incomeTotal - expendTotal);
+      options.series[1].data.push(incomeTotal);
+      options.series[2].data.push(-expendTotal);
+    });
+
+    return options;
   }
 
   updateChart(newData){

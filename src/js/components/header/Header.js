@@ -1,10 +1,12 @@
 var React = require('react');
+import { findDOMNode } from 'react-dom'
 import {Utils} from '../../utils/utils'
 import AccountStore from '../../stores/AccountStore'
 import EventStore from '../../stores/EventStore'
 import constant from '../../constants/accountConstants'
 import {DatePicker} from 'antd'
 const RangePicker = DatePicker.RangePicker;
+import moment from 'moment'
 
 export default class Header extends React.Component{
 
@@ -52,6 +54,7 @@ export default class Header extends React.Component{
 
   render(){
     let today = Utils.getTimeStamp(new Date());
+    let aWeekAgo = moment().subtract(7, 'day').format('YYYY-MM-DD');
     let { balance, routePath } = this.state;
 
     return (
@@ -67,7 +70,7 @@ export default class Header extends React.Component{
           {
             routePath === '/daily' ?
               <DatePicker defaultValue={today} format="yyyy-MM-dd" size="large" onChange={this.onChangeDate} /> :
-              <RangePicker onChange={this.onChangeRangeDate} size="large" defaultValue={[today, today]}/>
+              <RangePicker onChange={this.onChangeRangeDate} ref="rangePicker" size="large" defaultValue={[aWeekAgo, today]}/>
           }
         </div>
       </div>
