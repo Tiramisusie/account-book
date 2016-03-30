@@ -96,7 +96,7 @@ var Income = React.createClass({
   },
 
   render(){
-    var {listData, totalMoney, chartData, type} = this.state,
+    var {listData, chartData, type} = this.state,
       style = {marginLeft: '100px'};
     let emptyHolder = <div className="emptyHolder">空的</div>;
 
@@ -105,16 +105,12 @@ var Income = React.createClass({
         <div className="base-panel-head">
           <h3>
             <Row>
-              <Col span="4" style={{fontSize: '2rem'}}>
-                {type === 'income' ? '总收入' : '总支出'}
+              <Col span="6" style={{fontSize: '2rem'}}>
+                {type === 'income' ? '收入状况' : '支出状况'}
               </Col>
-              <Col span="4" style={{fontSize: "2rem"}}>
-                {totalMoney}
-                <small style={{marginLeft: "5px"}}>¥</small>
-              </Col>
-              <Col span="4" offset="12">
-                <Button type="primary" shape="circle" onClick={this.handleClick}>
-                  <Icon type="plus"/>
+              <Col span="4" style={{lineHeight: '30px'}}>
+                <Button type="primary" size="small" onClick={this.handleClick}>
+                  {type === 'income' ? '新增收入' : '新增支出'}
                 </Button>
               </Col>
             </Row>
