@@ -68,14 +68,14 @@ var Summary = React.createClass({
             <div className="chart-wrapper">
               {
                 incomeData.length > 0 ?
-                  <Chart data={incomeData} type="pie" name="income-sum" style={{width:"100%",height:"200px"}} /> :
+                  <Chart data={incomeData} type="pie" name="income" style={{width:"100%",height:"200px"}} /> :
                   emptyHolder
               }
             </div>
             <div className="chart-wrapper">
               {
                 expendData.length > 0 ?
-                  <Chart data={expendData} type="pie" name="expend-sum" style={{width:"100%",height:"200px"}} /> :
+                  <Chart data={expendData} type="pie" name="expend" style={{width:"100%",height:"200px"}} /> :
                   emptyHolder
               }
             </div>

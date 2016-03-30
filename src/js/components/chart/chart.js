@@ -4,10 +4,14 @@ import EventStore from '../../stores/EventStore'
 import AccountStore from '../../stores/AccountStore'
 import constant from '../../constants/accountConstants'
 
+var chartNameMap = {
+  income: '收入',
+  expend: '支出'
+};
+
 export default class EChart extends React.Component{
 
   myChart = null;  // the chart obj
-  options = {};
 
   static propTypes = {
     data: React.PropTypes.array,  //chart data
@@ -29,11 +33,9 @@ export default class EChart extends React.Component{
     switch (type) {
       case 'pie':
         options = this.setPieChart(data, name);
-        this.options = options;
         break;
       case 'bar':
         options = this.setBarChart(data);
-        this.options = options;
         this.myChart.on('click', (event)=>{
           AccountStore.getRecords(new Date(event.name));
         });
@@ -46,7 +48,7 @@ export default class EChart extends React.Component{
   setPieChart(data, title){
     return {
       title: {
-        text: title,
+        text: chartNameMap[title],
         left: 'left',
         top: 'top',
         textStyle: {
@@ -119,7 +121,7 @@ export default class EChart extends React.Component{
           label: {
             normal: {
               show: true,
-              position: 'right'
+              position: 'inside'
             }
           },
           data:[]
@@ -131,7 +133,7 @@ export default class EChart extends React.Component{
           label: {
             normal: {
               show: true,
-              position: 'left'
+              position: 'inside'
             }
           },
           data:[]
@@ -160,14 +162,9 @@ export default class EChart extends React.Component{
   }
 
   updateChart(newData){
-    this.options.series[0].data = newData.map((obj)=>{
-      return {
-        name: obj.type,
-        value: obj.money
-      }
-    });
+    let options = this.setBarChart(newData);
 
-    this.myChart.setOption(this.options);
+    this.myChart.setOption(options);
   }
 
   componentDidMount(){
@@ -175,7 +172,16 @@ export default class EChart extends React.Component{
   }
 
   componentWillReceiveProps(nextProps){
-    this.updateChart(nextProps.data);
+    let options,
+      { type, data, name } = nextProps;
+
+    if(type === 'bar') {
+      options = this.setBarChart(data);
+    } else {
+      options = this.setPieChart(data, name);
+    }
+
+    this.myChart.setOption(options);
   }
 
   render(){
