@@ -19,21 +19,32 @@ var Summary = React.createClass({
 
   componentDidMount(){
     EventStore.addEventChangeListener(constant.GET_RANGE_RECORDS, this.handleRangeRecords);
+    EventStore.addEventChangeListener(constant.GET_RECORDS, this.showOneDayDetail);
+
     AccountStore.getRangeRecords(moment().subtract(7, 'day')._d, new Date());
   },
 
   componentWillUnmount(){
     EventStore.removeEventChangeListener(constant.GET_RANGE_RECORDS, this.handleRangeRecords);
+    EventStore.removeEventChangeListener(constant.GET_RECORDS, this.showOneDayDetail);
   },
 
   handleRangeRecords(res){
-    let incomeData = res[0].data.income,
-      expendData = res[0].data.expend;
+    let incomeData = res[res.length-1].data.income,
+      expendData = res[res.length-1].data.expend;
 
     this.setState({
       incomeData: incomeData,
       expendData: expendData,
       lineData: res
+    })
+  },
+
+  //点击左边柱形图后在右边的饼图显示详情
+  showOneDayDetail(res){
+    this.setState({
+      incomeData: res.income,
+      expendData: res.expend
     })
   },
 

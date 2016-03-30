@@ -1,6 +1,7 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 import EventStore from '../../stores/EventStore'
+import AccountStore from '../../stores/AccountStore'
 import constant from '../../constants/accountConstants'
 
 export default class EChart extends React.Component{
@@ -33,6 +34,9 @@ export default class EChart extends React.Component{
       case 'bar':
         options = this.setBarChart(data);
         this.options = options;
+        this.myChart.on('click', (event)=>{
+          AccountStore.getRecords(new Date(event.name));
+        });
         break;
     }
 
@@ -68,7 +72,6 @@ export default class EChart extends React.Component{
   }
 
   setBarChart(data){
-    log(data);
     let options = {
       tooltip : {
         trigger: 'axis',
@@ -148,9 +151,9 @@ export default class EChart extends React.Component{
         expendTotal += (+expend.money);
       });
 
-      options.series[0].data.push(incomeTotal - expendTotal);
-      options.series[1].data.push(incomeTotal);
-      options.series[2].data.push(-expendTotal);
+      options.series[0].data.push(incomeTotal - expendTotal);   //结余
+      options.series[1].data.push(incomeTotal);                 //收入
+      options.series[2].data.push(-expendTotal);                //支出
     });
 
     return options;
