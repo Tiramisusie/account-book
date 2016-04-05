@@ -4,15 +4,15 @@
 var React = require('react');
 var ListItem = require('../listItem/listItem');
 var EventStore = require('../../stores/EventStore');
-import AccountStore from '../../stores/AccountStore'
-import constant from '../../constants/accountConstants'
+import AccountStore from '../../stores/AccountStore';
+import constant from '../../constants/accountConstants';
 var Modal = require('../modal/newRecordModal');
-import {Row, Col, Button, Icon} from 'antd'
-import EChart from '../chart/chart'
+import { Row, Col, Button } from 'antd';
+import EChart from '../chart/chart';
 
-var Income = React.createClass({
+const Income = React.createClass({
   getInitialState(){
-    var data = this.propsToState(this.props.data);
+    let data = this.propsToState(this.props.data);
     return ({
       listData: data.listData,
       totalMoney: data.totalMoney,
@@ -96,22 +96,26 @@ var Income = React.createClass({
   },
 
   render(){
-    var {listData, chartData, type} = this.state,
+    var {listData, chartData, type, totalMoney} = this.state,
       style = {marginLeft: '100px'};
     let emptyHolder = <div className="emptyHolder">空的</div>;
 
     return (
-      <Col id={type} span="9" style={ type==='expend' ? style : null }>
+      <Col id={type} span="9" style={ type === 'expend' ? style : null }>
         <div className="base-panel-head">
           <h3>
             <Row>
-              <Col span="6" style={{fontSize: '2rem'}}>
+              <Col span="6" style={ { fontSize: '2rem' } }>
                 {type === 'income' ? '收入状况' : '支出状况'}
               </Col>
-              <Col span="4" style={{lineHeight: '30px'}}>
+              <Col span="4" style={ { lineHeight: '30px' } }>
                 <Button type="primary" size="small" onClick={this.handleClick}>
                   {type === 'income' ? '新增收入' : '新增支出'}
                 </Button>
+              </Col>
+              <Col span="6" offset="8" style={ { lineHeight: '35px' } }>
+                <span>{type === 'income' ? '共收入: ' : '共支出: '}</span>
+                <span>{' ¥ ' + totalMoney}</span>
               </Col>
             </Row>
           </h3>

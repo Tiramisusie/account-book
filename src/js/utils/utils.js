@@ -5,7 +5,7 @@ export var Store = (function() {
         storage = win['localStorage'];
 
 
-    store.serialize = function(value) {
+    store.serialize = function (value) {
         return JSON.stringify(value)
     };
     store.deserialize = function(value) {

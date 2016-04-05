@@ -61,11 +61,14 @@ export default class Header extends React.Component{
       <div id="header">
         <h1 className="app-title">网络记账系统</h1>
 
-        <div className="balance">
-          <span>结余:</span>
-          <span>{balance}</span>
-        </div>
-
+        {
+          routePath !== '/daily' ? '' :
+            <div className="balance">
+              <span>结余:</span>
+              <span>{balance}</span>
+            </div>
+        }
+        
         <div className="date-picker">
           {
             routePath === '/daily' ?

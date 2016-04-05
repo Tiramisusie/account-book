@@ -4,10 +4,11 @@
 import constant from '../constants/accountConstants'
 var EventStore = require('./EventStore');
 import {Store, Utils} from '../utils/utils'
+import moment from 'moment'
 
 var AccountStore = {
-  incomeCount: 0,
-  expendCount: 0,
+  incomeCount: 0, //一天的总收入
+  expendCount: 0, //一天的总支出
 
   addIncome(data, date = new Date()){
     var timeStamp = Utils.getTimeStamp(date),
@@ -65,21 +66,14 @@ var AccountStore = {
   },
 
   getRangeRecords(start, end){
-    let response = [],
-      date;
+    let response = [];
 
     Store.forEach((key, val)=> {
-      date = key.split('-');  //date = ["yy","MM", "dd"]
-      
-      if (date[0]*1 >= start.getFullYear() && date[0]*1 <= end.getFullYear()) {
-        if (date[1]*1 >= start.getMonth()+1 && date[1]*1 <= end.getMonth()+1) {
-          if (date[2]*1 >= start.getDate() && date[2]*1 <= end.getDate()) {
-            response.push({
-              date: key,
-              data: {income: val.income, expend: val.expend}
-            });
-          }
-        }
+      if( moment(key, 'YYYY-MM-DD').isBetween(start, end) ){
+        response.push({
+          date: key,
+          data: {income: val.income, expend: val.expend}
+        });
       }
     });
     

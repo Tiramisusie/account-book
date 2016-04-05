@@ -1,8 +1,6 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
-import EventStore from '../../stores/EventStore'
 import AccountStore from '../../stores/AccountStore'
-import constant from '../../constants/accountConstants'
 
 var chartNameMap = {
   income: '收入',
@@ -74,6 +72,8 @@ export default class EChart extends React.Component{
   }
 
   setBarChart(data){
+    let totalIncome = 0,
+      totalExpend = 0;
     let options = {
       tooltip : {
         trigger: 'axis',
@@ -142,22 +142,25 @@ export default class EChart extends React.Component{
     };
 
     data.map(obj => {
-      let incomeTotal = 0,
-        expendTotal = 0;
+      let incomeDay = 0,
+        expendDay = 0;
 
       options.yAxis[0].data.push(obj.date);
       obj.data.income.map(income => {
-        incomeTotal += (+income.money);
+        incomeDay += (+income.money);
       });
       obj.data.expend.map(expend => {
-        expendTotal += (+expend.money);
+        expendDay += (+expend.money);
       });
-
-      options.series[0].data.push(incomeTotal - expendTotal);   //结余
-      options.series[1].data.push(incomeTotal);                 //收入
-      options.series[2].data.push(-expendTotal);                //支出
+      
+      totalIncome += incomeDay;
+      totalExpend += expendDay;
+      
+      options.series[0].data.push(incomeDay - expendDay);   //结余
+      options.series[1].data.push(incomeDay);                 //收入
+      options.series[2].data.push(-expendDay);                //支出
     });
-
+    
     return options;
   }
 

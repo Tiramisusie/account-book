@@ -7,13 +7,13 @@ import { Row, Col, Button, Menu } from 'antd';
 import { Router, Route, hashHistory, Link, IndexRoute } from 'react-router';
 require("!style!css!less!./css/app.less");
 
-var App = React.createClass({
-  render(){
+var App = React.createClass( {
+  render() {
     return (
       <div>
         <Header routePath={this.props.location.pathname} />
         <Row>
-          <Col span="3" style={{zIndex:'2',marginRight:'-1px'}}>
+          <Col span="3" style={ { zIndex: '2', marginRight: '-1px' } }>
             <nav>
               <ul className="nav-ul">
                 <li className="nav-link">
@@ -35,9 +35,9 @@ var App = React.createClass({
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={Daily}/>
-      <Route path="/daily" component={Daily}/>
-      <Route path="/summary"  component={Summary}/>
+      <IndexRoute component={Daily} />
+      <Route path="/daily" component={Daily} />
+      <Route path="/summary" component={Summary} />
     </Route>
   </Router>,
   document.getElementById('app')

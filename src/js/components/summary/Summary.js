@@ -4,7 +4,6 @@ import Chart from '../chart/chart'
 import EventStore from '../../stores/EventStore'
 import AccountStore from '../../stores/AccountStore'
 import constant from '../../constants/accountConstants'
-import {Utils} from '../../utils/utils'
 import moment from 'moment'
 
 var Summary = React.createClass({
@@ -13,7 +12,9 @@ var Summary = React.createClass({
     return {
       incomeData: [],
       expendData: [],
-      lineData: []
+      lineData: [],
+      rangeIncome: 0,
+      rangeExpend: 0
     }
   },
 
@@ -30,14 +31,39 @@ var Summary = React.createClass({
   },
 
   handleRangeRecords(res){
-    let incomeData = res[res.length-1].data.income,
-      expendData = res[res.length-1].data.expend;
+    let { totalIncome, totalExpend } = this.getRangeBalance(res);
 
-    this.setState({
-      incomeData: incomeData,
-      expendData: expendData,
-      lineData: res
-    })
+    if(res.length > 0) {
+      let incomeData = res[res.length - 1].data.income,
+        expendData = res[res.length - 1].data.expend;
+
+      this.setState({
+        incomeData: incomeData,
+        expendData: expendData,
+        rangeIncome: totalIncome,
+        rangeExpend: totalExpend,
+        lineData: res
+      })
+    }
+  },
+
+  getRangeBalance(res){
+    let totalIncome = 0,
+      totalExpend = 0;
+
+    res.map(record=>{
+      record.data.income.map(income => {
+        totalIncome += (+income.money);
+      });
+      record.data.expend.map(expend => {
+        totalExpend += (+expend.money);
+      });
+    });
+
+    return {
+      totalIncome: totalIncome,
+      totalExpend: totalExpend
+    }
   },
 
   //点击左边柱形图后在右边的饼图显示详情
@@ -48,9 +74,12 @@ var Summary = React.createClass({
     })
   },
 
+  renderEmpty(text){
+    return <div className="emptyHolder">{text}</div>;
+  },
+
   render(){
-    let {incomeData, expendData, lineData} = this.state;
-    let emptyHolder = <div className="emptyHolder">空的</div>;
+    let {incomeData, expendData, lineData, rangeIncome, rangeExpend} = this.state;
 
     return (
       <Col className="panel-container" span="21">
@@ -59,26 +88,35 @@ var Summary = React.createClass({
             <div className="summary-bar-container">
               {
                 lineData.length === 0 ?
-                  emptyHolder :
+                  this.renderEmpty('没有数据') :
                   <Chart data={lineData} type="bar" name="balance" style={{width:"100%",height:"80vh"}} />
               }
             </div>
           </Col>
           <Col span="12">
-            <div className="chart-wrapper">
+            <section className="chart-wrapper summary-detail">
+              <div>
+                <span className="summary-detail-income">总收入:{rangeIncome}</span>
+                <span className="summary-detail-expend">总支出:{rangeExpend}</span>
+              </div>
+              <div>
+                <span className="summary-detail-balance">结余:{rangeIncome - rangeExpend}</span>
+              </div>
+            </section>
+            <section className="chart-wrapper">
               {
                 incomeData.length > 0 ?
-                  <Chart data={incomeData} type="pie" name="income" style={{width:"100%",height:"200px"}} /> :
-                  emptyHolder
+                  <Chart data={incomeData} type="pie" name="income" style={{width:"100%",height:"30vh"}} /> :
+                  this.renderEmpty('没有收入')
               }
-            </div>
-            <div className="chart-wrapper">
+            </section>
+            <section>
               {
                 expendData.length > 0 ?
-                  <Chart data={expendData} type="pie" name="expend" style={{width:"100%",height:"200px"}} /> :
-                  emptyHolder
+                  <Chart data={expendData} type="pie" name="expend" style={{width:"100%",height:"30vh"}} /> :
+                  this.renderEmpty('没有支出')
               }
-            </div>
+            </section>
           </Col>
         </Row>
       </Col>

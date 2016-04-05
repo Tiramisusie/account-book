@@ -1,4 +1,4 @@
-@summary-height: 20vh;
+@header-height: 20vh;
 @border-bottom-color: #ddd;
 @main-panel-left-right: 100px;
 
@@ -29,7 +29,7 @@ body {
 #header {
   background: #5B73A7;
   width: 100vw;
-  height: @summary-height;
+  height: @header-height;
   position: relative;
 }
 
@@ -61,12 +61,10 @@ body {
   }
 }
 
-//--------panel header----------
-
-
 //--------panel list-----------
 .panel-container{
   border-left: 1px solid #ddd;
+  min-height: 100vh - @header-height;
 }
 
 .base-panel-head {
@@ -120,7 +118,7 @@ body {
   font-size: 3rem;
   color: #ccc;
   text-align: center;
-  margin-top: 50px;
+  margin: 50px 0;
 }
 
 
@@ -184,4 +182,23 @@ a.activeLink {
 
 .summary-bar-container{
   border-right: 1px solid #ccc;
+}
+
+.summary-detail{
+  height: 19vh;
+  padding: 20px 25%;
+}
+
+[class^='summary-detail-']{
+  display: inline-block;
+  text-align: center;
+  height: 20px;
+  width: 50%;
+  line-height: 20px;
+  font-size: 2rem;
+  padding: 0.8rem 0;
+}
+
+.summary-detail-balance{
+  width: 100%;
 }

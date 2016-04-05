@@ -10,7 +10,8 @@ var constant = keymirror({
     GET_RANGE_RECORDS: null,   //获取一个时间段的记录
     CHANGE_DATE: null,
     INCOME_CHANGE: null,
-    EXPEND_CHANGE: null
+    EXPEND_CHANGE: null,
+    SET_RANGE_BALANCE: null   //获取一段时间的统计数据
 });
 
 export default constant;
