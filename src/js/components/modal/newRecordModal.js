@@ -2,12 +2,10 @@
  * Created by liangningcong on 16/1/17.
  */
 var React = require('react');
-var ListItem = require('../listItem/listItem');
-import AccountStore from '../../stores/AccountStore'
 import { Modal, Form, Input } from 'antd'
 const FormItem = Form.Item;
 
-var MyModal = React.createClass({
+var AddRecordModal = React.createClass({
     getInitialState(){
         return ({
             visible: this.props.visible,
@@ -39,11 +37,7 @@ var MyModal = React.createClass({
         type.value = '';
         money.value = '';
 
-        if(this.props.type === 'income') {
-            AccountStore.addIncome(recordData);
-        } else {
-            AccountStore.addExpend(recordData);
-        }
+        this.props.handleAddRecord(recordData);
     },
 
     render(){
@@ -54,18 +48,27 @@ var MyModal = React.createClass({
             };
 
         return (
-            <Modal id={this.state.modalId} title={modalName} visible={this.state.visible}
-                   onOk={this.handleOK} onCancel={this.handleCancel} width="400"
+            <Modal id={this.state.modalId} 
+                   title={modalName} 
+                   visible={this.state.visible}
+                   onOk={this.handleOK} 
+                   onCancel={this.handleCancel} width="400"
             >
                 <Form horizontal>
                     <FormItem label="类型: " {...formItemLayout}>
-                        <input type="text" id="recordType" ref="recordType"
-                               className="ant-input ant-input-lg" style={{marginLeft:'10px'}}
+                        <input type="text" 
+                               id="recordType" 
+                               ref="recordType"
+                               className="ant-input ant-input-lg" 
+                               style={{marginLeft:'10px'}}
                         />
                     </FormItem>
                     <FormItem label="金额: " {...formItemLayout}>
-                        <input type="number" id="recordMoney" ref="recordMoney"
-                               className="ant-input ant-input-lg" style={{marginLeft:'10px'}}
+                        <input type="number" 
+                               id="recordMoney" 
+                               ref="recordMoney"
+                               className="ant-input ant-input-lg" 
+                               style={{marginLeft:'10px'}}
                         />
                     </FormItem>
                 </Form>
@@ -74,4 +77,4 @@ var MyModal = React.createClass({
     }
 });
 
-module.exports = MyModal;
+module.exports = AddRecordModal;

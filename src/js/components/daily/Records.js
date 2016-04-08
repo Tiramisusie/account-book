@@ -6,7 +6,8 @@ var ListItem = require('../listItem/listItem');
 var EventStore = require('../../stores/EventStore');
 import AccountStore from '../../stores/AccountStore';
 import constant from '../../constants/accountConstants';
-var Modal = require('../modal/newRecordModal');
+const AddRecordModal = require('../modal/NewRecordModal');
+import ModifyRecordModal from '../modal/ModifyRecordModal';
 import { Row, Col, Button } from 'antd';
 import EChart from '../chart/chart';
 
@@ -19,7 +20,9 @@ const Income = React.createClass({
       chartData: this.props.data,
       type: this.props.type,
       data: this.props.data,
-      [`${this.props.type}Visible`]: false
+      [`${this.props.type}Visible`]: false,
+      modifyVisible: false,  //修改记录模态框的显示状态
+      modifyContent: {}    //需要修改的内容
     })
   },
 
@@ -27,9 +30,10 @@ const Income = React.createClass({
     if (this.props.type === 'income') {
       AccountStore.setIncomeCount(this.state.totalMoney);
       EventStore.addEventChangeListener(constant.ADD_INCOME, this.addNewItem);
+      EventStore.addEventChangeListener(constant.MODIFY_RECORD, this.showModifyModal);
     } else {
-      EventStore.addEventChangeListener(constant.ADD_EXPEND, this.addNewItem);
       AccountStore.setExpendCount(this.state.totalMoney);
+      EventStore.addEventChangeListener(constant.ADD_EXPEND, this.addNewItem);
     }
   },
 
@@ -40,7 +44,8 @@ const Income = React.createClass({
       listData: newState.listData,
       totalMoney: newState.totalMoney,
       chartData: nextProps.data,
-      data: nextProps.data
+      data: nextProps.data,
+      modifyVisible: false
     });
 
     if (this.props.type === 'income') {
@@ -51,6 +56,8 @@ const Income = React.createClass({
   },
 
   componentWillUnmount(){
+    EventStore.removeEventChangeListener(constant.MODIFY_RECORD, this.showModifyModal);
+
     if (this.props.type === 'income') {
       EventStore.removeEventChangeListener(constant.ADD_INCOME, this.addNewItem);
     } else {
@@ -65,7 +72,7 @@ const Income = React.createClass({
 
     for (var i = 0, len = listData.length; i < len; i++) {
       //生成列表项
-      itemArr.push(<ListItem key={i} className='incomeItem' data={listData[i]}/>);
+      itemArr.push(<ListItem key={this.props.type + i} type={this.props.type} index={i} data={listData[i]}/>);
       //计算总金额
       totalMoney += listData[i].money * 1;
     }
@@ -77,8 +84,9 @@ const Income = React.createClass({
   },
 
   addNewItem(data){
-    var newProps = this.state.data.concat(data),
+    let newProps = this.state.data.concat(data),
       newState = this.propsToState(newProps);
+    
     this.setState({
       listData: newState.listData,
       totalMoney: newState.totalMoney,
@@ -88,15 +96,35 @@ const Income = React.createClass({
     })
   },
 
+  showModifyModal(res){
+    log(res);
+    this.setState({
+      modifyContent: res,
+      modifyVisible: true
+    })
+  },
+  
+  saveModify(data){
+    AccountStore.saveModifiedRecord(data);
+  },
+
   handleClick(e){
     e.preventDefault();
     this.setState({
       [`${this.props.type}Visible`]: true
     })
   },
+  
+  handleAddRecord(data){
+    if(this.state.type === 'income') {
+      AccountStore.addIncome(data);
+    } else {
+      AccountStore.addExpend(data);
+    }
+  },
 
   render(){
-    var {listData, chartData, type, totalMoney} = this.state,
+    var {listData, chartData, type, totalMoney, modifyVisible, modifyContent} = this.state,
       style = {marginLeft: '100px'};
     let emptyHolder = <div className="emptyHolder">空的</div>;
 
@@ -132,7 +160,10 @@ const Income = React.createClass({
               <EChart data={chartData} name={type} type="pie" style={{width:"100%",height:"200px"}}/>
           }
         </div>
-        <Modal type={type} visible={this.state[`${type}Visible`]}/>
+
+        <AddRecordModal type={type} handleAddRecord={this.handleAddRecord} visible={this.state[`${type}Visible`]}/>
+
+        <ModifyRecordModal type={type} visible={modifyVisible} handleSave={this.saveModify} modifyContent={modifyContent} />
       </Col>
     )
   }

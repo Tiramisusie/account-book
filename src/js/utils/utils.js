@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export var Store = (function() {
     // Store.js
     var store = {},
@@ -55,6 +57,6 @@ export var Store = (function() {
 
 export var Utils = {
     getTimeStamp(date){
-        return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+        return moment(date).format('YYYY-M-D');
     }
 };

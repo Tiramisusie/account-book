@@ -11,7 +11,10 @@ var constant = keymirror({
     CHANGE_DATE: null,
     INCOME_CHANGE: null,
     EXPEND_CHANGE: null,
-    SET_RANGE_BALANCE: null   //获取一段时间的统计数据
+    SET_RANGE_BALANCE: null,   //获取一段时间的统计数据
+    MODIFY_RECORD: null,
+    SAVE_MODIFIED: null,
+    DELETE_RECORD: null
 });
 
 export default constant;
