@@ -6,6 +6,77 @@ var EventStore = require('./EventStore');
 import {Store, Utils} from '../utils/utils'
 import moment from 'moment'
 
+var API = {
+  /**
+   * 添加新的记录
+   * @param date
+   * @param type income/expend
+   * @param data
+   */
+  addRecord(date, type, data){
+    return $.ajax({
+      url: '/addOneRecord',
+      type: 'POST',
+      data: {
+        date: date,
+        type: type,
+        data: data
+      }
+    })
+  },
+
+  /**
+   * 获取某一天的记录
+   * @param date
+   * @returns {*}
+   */
+  getOneDayRecord(date){
+    return $.ajax({
+      url: '/getOneRecord',
+      data: {
+        date: date
+      }
+    })
+  },
+
+  /**
+   * 获取某一时间范围内的数据
+   * @param start
+   * @param end
+   * @returns {*}
+   */
+  getRangeRecords(start, end){
+    return $.ajax({
+      url: 'getRangeRecords',
+      data: {
+        start: start,
+        end: end
+      }
+    })
+  },
+
+  /**
+   * 保存修改过的记录
+   * @param date
+   * @param type 
+   * @param data 修改过的记录所在的数组  
+   * @returns {*}
+   */
+  saveRecord(date, type, data){
+    return $.ajax({
+      url: '/saveOneRecord',
+      type: 'POST',
+      data: {
+        date: date,
+        type: type,
+        data: data
+      }
+    })
+  }
+};
+
+
+
 var AccountStore = {
   incomeCount: 0, //一天的总收入
   expendCount: 0, //一天的总支出
