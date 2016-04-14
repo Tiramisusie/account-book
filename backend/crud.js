@@ -25,7 +25,6 @@ var crud = {
    * @param data 记录的数据
    */
   addRecord(date, type, data){
-    let thatDay = new Date(date);
     let callback = (err, record)=>{
       if (err) throw err;
 
@@ -36,15 +35,13 @@ var crud = {
           expend: []
         });
 
-        doc
-          .set(type, data)
+        doc.set(type, [data])
           .save((err)=> {
             if (err) throw err;
           })
 
       } else {
-        record
-          .set(type, record[type].concat(data))
+        record.set(type, record[type].concat(data))
           .save((err)=>{
             if(err) throw err;
           });
@@ -65,8 +62,7 @@ var crud = {
     let saveHandler = (err, record)=>{
       if(err) throw err;
 
-      record
-        .set(type, data)
+      record.set(type, data)
         .save((err)=>{
           if(err) throw err;
         });
@@ -76,8 +72,7 @@ var crud = {
   },
 
   getOneDayRecord(rules, callback){
-    RecordModel
-      .findOne(rules)
+    RecordModel.findOne(rules)
       .exec(callback)
   },
 
@@ -88,8 +83,7 @@ var crud = {
    * @param callback
    */
   getRangeRecords(start, end, callback){
-    RecordModel
-      .find({ $and: [{$gte: start}, {$lte: end}] })
+    RecordModel.find({ $and: [{$gte: start}, {$lte: end}] })
       .exec(callback);
   }
 };

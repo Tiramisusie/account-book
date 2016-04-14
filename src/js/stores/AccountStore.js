@@ -16,7 +16,8 @@ var API = {
   addRecord(date, type, data){
     return $.ajax({
       url: '/addOneRecord',
-      type: 'POST',
+      type: 'post',
+      dataType: 'json',
       data: {
         date: date,
         type: type,
@@ -33,6 +34,7 @@ var API = {
   getOneDayRecord(date){
     return $.ajax({
       url: '/getOneRecord',
+      dataType: 'json',
       data: {
         date: date
       }
@@ -47,11 +49,12 @@ var API = {
    */
   getRangeRecords(start, end){
     return $.ajax({
-      url: 'getRangeRecords',
-      data: {
+      url: '/getRangeRecords',
+      dataType: 'json',
+      data: JSON.stringify({
         start: start,
         end: end
-      }
+      })
     })
   },
 
@@ -65,12 +68,14 @@ var API = {
   saveRecord(date, type, data){
     return $.ajax({
       url: '/saveOneRecord',
-      type: 'POST',
-      data: {
+      type: 'post',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
         date: date,
         type: type,
         data: data
-      }
+      })
     })
   }
 };
@@ -85,35 +90,21 @@ var AccountStore = {
   modifyType: '',   //需要修改的记录的类型
 
   addIncome(data, date = new Date()){
-    var timeStamp = Utils.getTimeStamp(date),
-      oldData = Store.get(timeStamp),
-      newData;
+    let timeStamp = Utils.getTimeStamp(date);
 
-    if (!!oldData) {
-      oldData.income.push(data);
-      newData = oldData;
-    } else {
-      newData = {income: [data], expend: []};
-    }
-    Store.set(timeStamp, newData);
-
-    EventStore.emitEvent(constant.ADD_INCOME, data);
+    API.addRecord(timeStamp, 'income', data)
+      .then(()=>{
+        EventStore.emitEvent(constant.ADD_INCOME, data);
+      });
   },
 
   addExpend(data, date = new Date()){
-    var timeStamp = Utils.getTimeStamp(date),
-      oldData = Store.get(timeStamp),
-      newData;
+    let timeStamp = Utils.getTimeStamp(date);
 
-    if (!!oldData) {
-      oldData.expend.push(data);
-      newData = oldData;
-    } else {
-      newData = {expend: [data], income: []};
-    }
-    Store.set(timeStamp, newData);
-
-    EventStore.emitEvent(constant.ADD_EXPEND, data);
+    API.addRecord(timeStamp, 'expend', data)
+      .then(()=>{
+        EventStore.emitEvent(constant.ADD_EXPEND, data);
+      });
   },
 
   /**
@@ -157,8 +148,12 @@ var AccountStore = {
   },
 
   getRecords(date = new Date()){
-    var data = Store.get(Utils.getTimeStamp(date));
-    EventStore.emitEvent(constant.GET_RECORDS, data);
+    API.getOneDayRecord(Utils.getTimeStamp(date))
+      .then( (res)=>{
+        log(res);
+        EventStore.emitEvent(constant.GET_RECORDS, res);
+      });
+
   },
 
   changeDate(date){
