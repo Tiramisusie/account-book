@@ -23,9 +23,10 @@ var crud = {
    * @param date 日期
    * @param type 记录的类型:income/expend
    * @param data 记录的数据
+   * @param callback
    */
-  addRecord(date, type, data){
-    let callback = (err, record)=>{
+  addRecord(date, type, data, callback){
+    let handler = (err, record)=>{
       if (err) throw err;
 
       if (!record) {   //没有该日期的相关记录
@@ -36,20 +37,16 @@ var crud = {
         });
 
         doc.set(type, [data])
-          .save((err)=> {
-            if (err) throw err;
-          })
+          .save(callback)
 
       } else {
         record.set(type, record[type].concat(data))
-          .save((err)=>{
-            if(err) throw err;
-          });
+          .save(callback);
 
       }
     };
 
-    this.getOneDayRecord({date: date}, callback);
+    this.getOneDayRecord({date: date}, handler);
   },
 
   /**
@@ -85,6 +82,10 @@ var crud = {
   getRangeRecords(start, end, callback){
     RecordModel.find({ $and: [{$gte: start}, {$lte: end}] })
       .exec(callback);
+  },
+  
+  deleteOneRecord(id, data, callback){
+    RecordModel.findByIdAndUpdate(id, data, callback);
   }
 };
 

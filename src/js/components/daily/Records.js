@@ -84,6 +84,7 @@ const Income = React.createClass({
   },
 
   addNewItem(data){
+    log(data);
     let newProps = this.state.data.concat(data),
       newState = this.propsToState(newProps);
     

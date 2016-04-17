@@ -30,6 +30,7 @@ var Main = React.createClass ({
 
     handleLocalRecords(data){
         var state = data ? data : {income:[], expend:[]};
+
         this.setState({
             incomeList: state.income,
             expendList: state.expend
@@ -37,11 +38,13 @@ var Main = React.createClass ({
     },
 
     render() {
+        let {incomeList, expendList} = this.state;
+
         return (
             <Col span="21" className="panel-container" style={{paddingLeft: '50px'}}>
                 <Row type="flex" justify="start">
-                    <Records data={this.state.incomeList} type="income"/>
-                    <Records data={this.state.expendList} type="expend"/>
+                    <Records data={incomeList} type="income"/>
+                    <Records data={expendList} type="expend"/>
                 </Row>
             </Col>
         )

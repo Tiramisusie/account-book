@@ -51,10 +51,10 @@ var API = {
     return $.ajax({
       url: '/getRangeRecords',
       dataType: 'json',
-      data: JSON.stringify({
+      data: {
         start: start,
         end: end
-      })
+      }
     })
   },
 
@@ -70,12 +70,23 @@ var API = {
       url: '/saveOneRecord',
       type: 'post',
       dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify({
+      data: {
         date: date,
         type: type,
         data: data
-      })
+      }
+    })
+  },
+
+  deleteOneRecord(id, data){
+    return $.ajax({
+      url: '/deleteOne',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        id: id,
+        data: data
+      }
     })
   }
 };
@@ -88,12 +99,14 @@ var AccountStore = {
   currentDate: new Date(), //当前选择的日期
   modifyIndex: -1,   //需要修改的记录的索引
   modifyType: '',   //需要修改的记录的类型
+  recordsCache: {},   //当天记录的缓存
 
   addIncome(data, date = new Date()){
     let timeStamp = Utils.getTimeStamp(date);
 
     API.addRecord(timeStamp, 'income', data)
-      .then(()=>{
+      .then((res)=>{
+        log(res);
         EventStore.emitEvent(constant.ADD_INCOME, data);
       });
   },
@@ -102,7 +115,8 @@ var AccountStore = {
     let timeStamp = Utils.getTimeStamp(date);
 
     API.addRecord(timeStamp, 'expend', data)
-      .then(()=>{
+      .then((res)=>{
+        log(res);
         EventStore.emitEvent(constant.ADD_EXPEND, data);
       });
   },
@@ -138,19 +152,22 @@ var AccountStore = {
   },
   
   deleteOneRecord(type, index){
-    let timestamp = Utils.getTimeStamp(this.currentDate),
-      localData = Store.get(timestamp);
-    
+    let localData = this.recordsCache;
+
     localData[type].splice(index, 1);
-    
-    Store.set(timestamp, localData);
-    this.getRecords(this.currentDate);
+
+    API.deleteOneRecord(localData._id, localData)
+      .then((res)=>{
+        if(!res.err){
+          EventStore.emitEvent(constant.GET_RECORDS, localData);
+        }
+      });
   },
 
   getRecords(date = new Date()){
     API.getOneDayRecord(Utils.getTimeStamp(date))
       .then( (res)=>{
-        log(res);
+        this.recordsCache = res;
         EventStore.emitEvent(constant.GET_RECORDS, res);
       });
 
