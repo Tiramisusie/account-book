@@ -12,18 +12,11 @@ var router = function(app) {
     let date = req.body.date,
       type = req.body.type,
       data = req.body.data;
-    
-    let result = {
-      err: 0,
-      msg: ''
-    };
 
     let callback = (err)=>{
-      if(err) {
-        result.err = 1;
-        result.msg = err;
-      }
-      res.send(result);
+      res.send({
+        err: err
+      });
     };
     
     crud.addRecord(date, type, data, callback);
@@ -35,26 +28,41 @@ var router = function(app) {
     crud.getOneDayRecord({date: new Date(time)}, (err, docs)=>{
       if(err) throw err;
 
-      res.send(docs);
+      console.log(docs);
+      if(docs) {
+        res.send(docs);
+      } else {    //没有当天的记录
+        res.send({
+          date: time,
+          income: [],
+          expend: []
+        })
+      }
     })
   });
   
   app.post('/deleteOne', (req, res)=>{
     let id = req.body.id,
       data = req.body.data;
-    let result = {
-      err: 0,
-      msg: ''
-    };
     let callback = (err)=>{
-      if(err){
-        result.err = 1;
-        result.msg = err;
-      } 
-      res.send(result);
+      res.send({
+        err: err
+      });
     };
-    
+
     crud.deleteOneRecord(id, data, callback);
+  });
+
+  app.post('/saveModified', (req, res)=>{
+    let id = req.body.id,
+      data = req.body.data,
+      callback = (err)=>{
+        res.send({
+          err: err
+        })
+      };
+
+    crud.saveModified(id, data, callback);
   })
 };
 

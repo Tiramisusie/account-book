@@ -15,17 +15,11 @@ var Main = React.createClass ({
 
     componentDidMount(){
         EventStore.addEventChangeListener(constant.GET_RECORDS, this.handleLocalRecords);
-        EventStore.addEventChangeListener(constant.CHANGE_DATE, this.changeDate);
         AccountStore.getRecords();
     },
 
     componentWillUnmount(){
         EventStore.removeEventChangeListener(constant.GET_RECORDS, this.handleLocalRecords);
-        EventStore.removeEventChangeListener(constant.CHANGE_DATE, this.changeDate);
-    },
-
-    changeDate(date){
-        AccountStore.getRecords(date)
     },
 
     handleLocalRecords(data){

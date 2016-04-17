@@ -51,21 +51,11 @@ var crud = {
 
   /**
    * 保存修改过的记录
-   * @param date
-   * @param type
+   * @param id
    * @param data
    */
-  saveRecord(date, type, data){
-    let saveHandler = (err, record)=>{
-      if(err) throw err;
-
-      record.set(type, data)
-        .save((err)=>{
-          if(err) throw err;
-        });
-
-      this.getOneDayRecord({date: date}, saveHandler);
-    }
+  saveModified(id, data, callback){
+    RecordModel.findByIdAndUpdate(id, data, callback);
   },
 
   getOneDayRecord(rules, callback){

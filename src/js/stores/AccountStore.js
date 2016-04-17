@@ -60,19 +60,17 @@ var API = {
 
   /**
    * 保存修改过的记录
-   * @param date
-   * @param type 
+   * @param id 要修改的记录的id
    * @param data 修改过的记录所在的数组  
    * @returns {*}
    */
-  saveRecord(date, type, data){
+  saveModified(id, data){
     return $.ajax({
-      url: '/saveOneRecord',
+      url: '/saveModified',
       type: 'post',
       dataType: 'json',
       data: {
-        date: date,
-        type: type,
+        id: id,
         data: data
       }
     })
@@ -101,23 +99,25 @@ var AccountStore = {
   modifyType: '',   //需要修改的记录的类型
   recordsCache: {},   //当天记录的缓存
 
-  addIncome(data, date = new Date()){
+  addIncome(data, date = this.currentDate){
     let timeStamp = Utils.getTimeStamp(date);
 
     API.addRecord(timeStamp, 'income', data)
       .then((res)=>{
-        log(res);
-        EventStore.emitEvent(constant.ADD_INCOME, data);
+        if(!res.err) {
+          EventStore.emitEvent(constant.ADD_INCOME, data);
+        }
       });
   },
 
-  addExpend(data, date = new Date()){
+  addExpend(data, date = this.currentDate){
     let timeStamp = Utils.getTimeStamp(date);
 
     API.addRecord(timeStamp, 'expend', data)
       .then((res)=>{
-        log(res);
-        EventStore.emitEvent(constant.ADD_EXPEND, data);
+        if(!res.err) {
+          EventStore.emitEvent(constant.ADD_EXPEND, data);
+        }
       });
   },
 
@@ -127,8 +127,7 @@ var AccountStore = {
    * @param index 要修改的记录的index
    */
   getModifyRecord(type, index){
-    let timestamp = Utils.getTimeStamp(this.currentDate),
-      localData = Store.get(timestamp);
+    let localData = this.recordsCache;
 
     this.modifyIndex = index;
     this.modifyType = type;
@@ -141,14 +140,17 @@ var AccountStore = {
    * @param data
    */
   saveModifiedRecord(data){
-    let { modifyType, modifyIndex, currentDate } = this;
-    let timestamp = Utils.getTimeStamp(this.currentDate),
-      localData = Store.get(timestamp);
+    let { modifyType, modifyIndex } = this,
+      localData = this.recordsCache;
 
     localData[modifyType][modifyIndex] = data;
 
-    Store.set(timestamp, localData);
-    this.getRecords(currentDate);
+    API.saveModified(localData._id, localData)
+      .then((res)=>{
+        if(!res.err){
+          EventStore.emitEvent(constant.GET_RECORDS, localData);
+        }
+      })
   },
   
   deleteOneRecord(type, index){
@@ -175,7 +177,7 @@ var AccountStore = {
 
   changeDate(date){
     this.currentDate = date;
-    EventStore.emitEvent(constant.CHANGE_DATE, date);
+    this.getRecords(date);
   },
 
   setIncomeCount(num){
