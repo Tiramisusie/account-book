@@ -69,9 +69,11 @@ var crud = {
    * @param end
    * @param callback
    */
-  getRangeRecords(start, end, callback){
-    RecordModel.find({ $and: [{$gte: start}, {$lte: end}] })
-      .exec(callback);
+  getRangeRecords(start, callback){
+    RecordModel.find(
+      { date: {$gte: start} },
+      callback
+    );
   },
   
   deleteOneRecord(id, data, callback){

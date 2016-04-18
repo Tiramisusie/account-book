@@ -4,6 +4,7 @@
 'use strict';
 
 var crud = require('./crud');
+var moment = require('moment');
 
 var router = function(app) {
   //调用 crud 中的方法时注意把日期转换成 Date 类型!!!
@@ -63,6 +64,35 @@ var router = function(app) {
       };
 
     crud.saveModified(id, data, callback);
+  });
+  
+  app.get('/getRangeRecords', (req, res)=>{
+    let query = req.query,
+      start = query.start,
+      end = new Date(query.end),
+      result = [];
+    let callback = (err, docs)=>{
+
+      if(err){
+        res.send({
+          err: err
+        })
+      } else {
+        docs.forEach( (obj)=>{
+          if( moment(obj.date).isSameOrBefore(end) ){
+            result.push(obj);
+          }
+        });
+        
+        result.sort((obj1, obj2)=>{
+          return moment(obj1.date).isBefore(obj2.date);
+        });
+
+        res.send(result)
+      }
+    };
+    
+    crud.getRangeRecords(new Date(start), callback);
   })
 };
 

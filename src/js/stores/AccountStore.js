@@ -196,17 +196,18 @@ var AccountStore = {
 
   getRangeRecords(start, end){
     let response = [];
-
-    Store.forEach((key, val)=> {
-      if( moment(key, 'YYYY-MM-DD').isBetween(start, end) ){
-        response.push({
-          date: key,
-          data: {income: val.income, expend: val.expend}
-        });
-      }
-    });
     
-    EventStore.emitEvent(constant.GET_RANGE_RECORDS, response);
+    API.getRangeRecords(Utils.getTimeStamp(start), Utils.getTimeStamp(end))
+      .then((res)=>{
+        res.forEach((obj)=>{
+          response.push({
+            date: Utils.getTimeStamp(obj.date),
+            data: {income: obj.income, expend: obj.expend}
+          });
+        });
+
+        EventStore.emitEvent(constant.GET_RANGE_RECORDS, response);
+      });
   }
 };
 
