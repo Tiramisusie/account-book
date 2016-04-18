@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
   }),
   RecordModel = mongoose.model('record', recordSchema);
 
-mongoose.connect('mongodb://localhost:27011/db/account');
+mongoose.connect('mongodb://localhost:27011/db');
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
