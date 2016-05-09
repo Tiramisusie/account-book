@@ -2,10 +2,10 @@
   "name": "account-book",
   "version": "1.0.0",
   "scripts": {
-    "start": "node server.js",
-    "backend": "nodemon ./backend/app",
+    "start": "nodemon app.js",
     "mongo": "mongod --dbpath db --port 27011"
   },
+  "main": "./src/index.js",
   "author": "liangningcong",
   "license": "MIT",
   "devDependencies": {
@@ -29,7 +29,8 @@
     "react-router": "^2.0.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.2",
-    "webpack-dev-server": "^1.12.1"
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
     "body-parser": "^1.15.0",
