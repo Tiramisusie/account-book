@@ -29,7 +29,6 @@ var router = function(app) {
     crud.getOneDayRecord({date: new Date(time)}, (err, docs)=>{
       if(err) throw err;
 
-      console.log(docs);
       if(docs) {
         res.send(docs);
       } else {    //没有当天的记录

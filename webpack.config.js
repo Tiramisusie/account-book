@@ -2,10 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'eval-source-map',
   entry: [
-    'webpack-hot-middleware/client',
-    'webpack/hot/dev-server',
+    'webpack-hot-middleware/client?reload=true',
     './src/index.js'
   ],
   output: {
@@ -14,7 +13,9 @@ module.exports = {
     publicPath: 'http://localhost:3031/scripts/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [
