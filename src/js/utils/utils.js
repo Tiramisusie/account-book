@@ -58,5 +58,21 @@ export var Store = (function() {
 export var Utils = {
     getTimeStamp(date){
         return moment(date).format('YYYY-M-D');
+    },
+
+    getDaysInMonth(month){
+        if(!month){
+            month = moment().format('YYYY-M');
+        }
+        
+        let howMany = moment(month, 'YYYY-M').daysInMonth(),
+          days = [],
+          date = 1;
+
+        while (date <= howMany){
+            days.push(String(date++));
+        }
+
+        return days;
     }
 };

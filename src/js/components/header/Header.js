@@ -5,7 +5,7 @@ import AccountStore from '../../stores/AccountStore'
 import EventStore from '../../stores/EventStore'
 import constant from '../../constants/accountConstants'
 import {DatePicker} from 'antd'
-const RangePicker = DatePicker.RangePicker;
+const MonthPicker = DatePicker.MonthPicker;
 import moment from 'moment'
 
 export default class Header extends React.Component{
@@ -39,11 +39,12 @@ export default class Header extends React.Component{
     AccountStore.changeDate(date);
   }
 
-  onChangeRangeDate(date){
-    let start = date[0],
-      end = date[1];
+  onChangeMonth(date){
+    let month = moment(date).format('YYYY-M'),
+      start = month + '-1',
+      end = month + '-' + Utils.getDaysInMonth().splice(-1)[0];
 
-    AccountStore.getRangeRecords(start, end);
+    AccountStore.getMonthlyRecords(start, end);
   }
 
   getBalance=(balance)=>{
@@ -54,7 +55,7 @@ export default class Header extends React.Component{
 
   render(){
     let today = Utils.getTimeStamp(new Date());
-    let aWeekAgo = moment().subtract(7, 'day').format('YYYY-MM-DD');
+    let month = moment().format('YYYY-M');
     let { balance, routePath } = this.state;
 
     return (
@@ -73,7 +74,7 @@ export default class Header extends React.Component{
           {
             routePath === '/daily' ?
               <DatePicker defaultValue={today} format="yyyy-MM-dd" size="large" onChange={this.onChangeDate} /> :
-              <RangePicker onChange={this.onChangeRangeDate} ref="rangePicker" size="large" defaultValue={[aWeekAgo, today]}/>
+              <MonthPicker onChange={this.onChangeMonth} ref="MonthPicker" size="large" defaultValue={month}/>
           }
         </div>
       </div>

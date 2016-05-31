@@ -47,7 +47,7 @@ var API = {
    * @param end
    * @returns {*}
    */
-  getRangeRecords(start, end){
+  getMonthlyRecords(start, end){
     return $.ajax({
       url: '/getRangeRecords',
       dataType: 'json',
@@ -205,19 +205,10 @@ var AccountStore = {
     return this.incomeCount - this.expendCount;
   },
 
-  getRangeRecords(start, end){
-    let response = [];
-    
-    API.getRangeRecords(Utils.getTimeStamp(start), Utils.getTimeStamp(end))
+  getMonthlyRecords(start, end){
+    API.getMonthlyRecords(start, end)
       .then((res)=>{
-        res.forEach((obj)=>{
-          response.push({
-            date: Utils.getTimeStamp(obj.date),
-            data: {income: obj.income, expend: obj.expend}
-          });
-        });
-
-        EventStore.emitEvent(constant.GET_RANGE_RECORDS, response);
+        EventStore.emitEvent(constant.GET_MONTHLY_RECORDS, res);
       });
   }
 };

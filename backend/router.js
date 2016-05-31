@@ -91,7 +91,7 @@ var router = function(app) {
       }
     };
     
-    crud.getRangeRecords(new Date(start), callback);
+    crud.getMonthlyRecords(new Date(start), callback);
   })
 };
 

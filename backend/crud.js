@@ -69,7 +69,7 @@ var crud = {
    * @param end
    * @param callback
    */
-  getRangeRecords(start, callback){
+  getMonthlyRecords(start, callback){
     RecordModel.find(
       { date: {$gte: start} },
       callback

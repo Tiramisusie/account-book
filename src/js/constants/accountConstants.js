@@ -15,7 +15,8 @@ var constant = keymirror({
     MODIFY_RECORD: null,
     SAVE_MODIFIED: null,
     DELETE_RECORD: null,
-    SELECT_ITEM: null
+    SELECT_ITEM: null,
+    GET_MONTHLY_RECORDS: null
 });
 
 export default constant;

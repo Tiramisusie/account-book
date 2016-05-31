@@ -22,7 +22,7 @@ var Summary = React.createClass({
     EventStore.addEventChangeListener(constant.GET_RANGE_RECORDS, this.handleRangeRecords);
     EventStore.addEventChangeListener(constant.GET_RECORDS, this.showOneDayDetail);
 
-    AccountStore.getRangeRecords(moment().subtract(7, 'day')._d, new Date());
+    AccountStore.getMonthlyRecords(moment().subtract(7, 'day')._d, new Date());
   },
 
   componentWillUnmount(){
