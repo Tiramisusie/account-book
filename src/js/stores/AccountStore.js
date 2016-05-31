@@ -89,8 +89,6 @@ var API = {
   }
 };
 
-
-
 var AccountStore = {
   incomeCount: 0, //一天的总收入
   expendCount: 0, //一天的总支出
@@ -106,6 +104,10 @@ var AccountStore = {
       .then((res)=>{
         if(!res.err) {
           EventStore.emitEvent(constant.ADD_INCOME, data);
+          API.getOneDayRecord(Utils.getTimeStamp(date))
+            .then( (res)=>{
+              this.recordsCache = res;
+            });
         }
       });
   },
@@ -117,6 +119,10 @@ var AccountStore = {
       .then((res)=>{
         if(!res.err) {
           EventStore.emitEvent(constant.ADD_EXPEND, data);
+          API.getOneDayRecord(Utils.getTimeStamp(date))
+            .then( (res)=>{
+              this.recordsCache = res;
+            });
         }
       });
   },
@@ -131,8 +137,13 @@ var AccountStore = {
 
     this.modifyIndex = index;
     this.modifyType = type;
-
-    EventStore.emitEvent(constant.MODIFY_RECORD, localData[type][index]);
+    
+    let res = {
+      modifyType: type,
+      modifyContent: localData[type][index]
+    };
+    
+    EventStore.emitEvent(constant.MODIFY_RECORD, res);
   },
 
   /**

@@ -22,7 +22,8 @@ const Income = React.createClass({
       data: this.props.data,
       [`${this.props.type}Visible`]: false,
       modifyVisible: false,  //修改记录模态框的显示状态
-      modifyContent: {}    //需要修改的内容
+      modifyContent: {},    //需要修改的内容
+      modifyType: ''
     })
   },
 
@@ -30,10 +31,10 @@ const Income = React.createClass({
     if (this.props.type === 'income') {
       AccountStore.setIncomeCount(this.state.totalMoney);
       EventStore.addEventChangeListener(constant.ADD_INCOME, this.addNewItem);
-      EventStore.addEventChangeListener(constant.MODIFY_RECORD, this.showModifyModal);
     } else {
       AccountStore.setExpendCount(this.state.totalMoney);
       EventStore.addEventChangeListener(constant.ADD_EXPEND, this.addNewItem);
+      EventStore.addEventChangeListener(constant.MODIFY_RECORD, this.showModifyModal);
     }
   },
 
@@ -84,7 +85,6 @@ const Income = React.createClass({
   },
 
   addNewItem(data){
-    log(data);
     let newProps = this.state.data.concat(data),
       newState = this.propsToState(newProps);
     
@@ -93,15 +93,17 @@ const Income = React.createClass({
       totalMoney: newState.totalMoney,
       chartData: newProps,
       data: newProps,
-      [`${this.props.type}Visible`]: false
+      [`${this.props.type}Visible`]: false,
+      modifyVisible: false
     })
   },
 
   showModifyModal(res){
-    log(res);
     this.setState({
-      modifyContent: res,
-      modifyVisible: true
+      modifyContent: res.modifyContent,
+      modifyVisible: true,
+      modifyType: res.modifyType,
+      [`${this.props.type}Visible`]: false
     })
   },
   
@@ -112,7 +114,8 @@ const Income = React.createClass({
   handleClick(e){
     e.preventDefault();
     this.setState({
-      [`${this.props.type}Visible`]: true
+      [`${this.props.type}Visible`]: true,
+      modifyVisible: false
     })
   },
   
@@ -125,7 +128,7 @@ const Income = React.createClass({
   },
 
   render(){
-    var {listData, chartData, type, totalMoney, modifyVisible, modifyContent} = this.state,
+    let {listData, chartData, type, totalMoney, modifyVisible, modifyContent, modifyType} = this.state,
       style = {marginLeft: '100px'};
     let emptyHolder = <div className="emptyHolder">空的</div>;
 
@@ -164,7 +167,7 @@ const Income = React.createClass({
 
         <AddRecordModal type={type} handleAddRecord={this.handleAddRecord} visible={this.state[`${type}Visible`]}/>
 
-        <ModifyRecordModal type={type} visible={modifyVisible} handleSave={this.saveModify} modifyContent={modifyContent} />
+        <ModifyRecordModal type={modifyType} visible={modifyVisible} handleSave={this.saveModify} modifyContent={modifyContent} />
       </Col>
     )
   }

@@ -23,7 +23,7 @@ var Item = React.createClass({
 
                 <Button size="small" 
                         style={{marginLeft:"10px"}}
-                        onClick={this.onClickEdit.bind(this, type, index)}
+                        onClick={()=>this.onClickEdit(type, index)}
                 >
                   <Icon type="edit" />
                   编辑

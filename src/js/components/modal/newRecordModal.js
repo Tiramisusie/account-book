@@ -4,6 +4,7 @@
 var React = require('react');
 import { Modal, Form, Input } from 'antd'
 const FormItem = Form.Item;
+import SelectItems from './SelectItems'
 
 var AddRecordModal = React.createClass({
     getInitialState(){
@@ -54,12 +55,14 @@ var AddRecordModal = React.createClass({
                    onOk={this.handleOK} 
                    onCancel={this.handleCancel} width="400"
             >
+                <SelectItems type={this.props.type}/>
+
                 <Form horizontal>
                     <FormItem label="类型: " {...formItemLayout}>
                         <input type="text" 
-                               id="recordType" 
+                               id="recordType"
                                ref="recordType"
-                               className="ant-input ant-input-lg" 
+                               className="ant-input ant-input-lg recordType" 
                                style={{marginLeft:'10px'}}
                         />
                     </FormItem>

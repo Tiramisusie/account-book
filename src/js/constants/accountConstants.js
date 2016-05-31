@@ -14,7 +14,8 @@ var constant = keymirror({
     SET_RANGE_BALANCE: null,   //获取一段时间的统计数据
     MODIFY_RECORD: null,
     SAVE_MODIFIED: null,
-    DELETE_RECORD: null
+    DELETE_RECORD: null,
+    SELECT_ITEM: null
 });
 
 export default constant;

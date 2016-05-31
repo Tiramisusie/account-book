@@ -4,6 +4,7 @@
 import React from 'react'
 import { Modal, Form, Input } from 'antd'
 const FormItem = Form.Item;
+import SelectItems from './SelectItems'
 
 export default class ModifyRecordModal extends React.Component{
   static propTypes = {
@@ -60,12 +61,14 @@ export default class ModifyRecordModal extends React.Component{
              onOk={this.handleOK}
              onCancel={this.handleCancel} width="400"
       >
+        <SelectItems type={this.props.type}/>
+
         <Form horizontal>
           <FormItem label="类型: " {...formItemLayout}>
             <input type="text"
                    id="recordType"
                    ref="recordType"
-                   className="ant-input ant-input-lg"
+                   className="ant-input ant-input-lg recordType"
                    style={{marginLeft:'10px'}}
                    placeholder={content.type}
             />
