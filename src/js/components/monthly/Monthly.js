@@ -23,7 +23,7 @@ export default class Monthly extends React.Component{
         timeline: {
           axisType: 'category',
           autoPlay: false,
-          playInterval: 10,
+          playInterval: 1000,
           data: daysInMonth
         },
         tooltip: {},
