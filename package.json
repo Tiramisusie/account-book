@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon app.js",
-    "mongo": "mongod --dbpath db --port 27011"
+    "mongo": "mongod --dbpath db --port 27011",
+    "deploy": "NODE_ENV=production webpack -p --config webpack.config.production.js"
   },
   "main": "./src/index.js",
   "author": "liangningcong",
